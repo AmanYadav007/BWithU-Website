@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="BwithU is a warm, futuristic AI browser companion that chats in real time, searches the web, and controls your browser tabs. Meet Bumi, your living digital companion." />
+    <meta name="keywords" content="AI companion, browser extension, Chrome extension, Grok Voice, voice assistant, browser helper, Bumi" />
+    
+    <!-- SEO Open Graph -->
+    <meta property="og:title" content="BwithU - Your AI Companion, Always With You" />
+    <meta property="og:description" content="A warm, futuristic AI companion that lives in your browser. Chat via real-time voice, search with Brave, and manage your tabs with Bumi." />
+    <meta property="og:image" content="assets/logo.png" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="BwithU - Your AI Companion, Always With You" />
+    <meta name="twitter:description" content="A warm, futuristic AI companion that lives in your browser. Meet Bumi today." />
+    <meta name="twitter:image" content="assets/logo.png" />
+
+    <title>BwithU - Your AI Companion, Always With You</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    
+    <!-- Core Styling -->
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- Background Glows (Aurora Effects) -->
+    <div class="aurora aurora-1" aria-hidden="true"></div>
+    <div class="aurora aurora-2" aria-hidden="true"></div>
+    <div class="particles-container" id="bg-particles" aria-hidden="true"></div>
+
+    <!-- Navigation Header -->
+    <header class="glass-header" id="main-header">
+      <div class="nav-container">
+        <a href="#" class="brand-logo" id="nav-brand-logo">
+          <img src="assets/logo.png" alt="BwithU Logo" class="nav-logo-img" />
+          <span class="nav-brand-text">Bwith<span class="cyan-highlight">U</span></span>
+        </a>
+        <nav class="nav-menu" id="nav-navigation-menu">
+          <a href="#features" class="nav-link" id="nav-link-features">Features</a>
+          <a href="#playground" class="nav-link" id="nav-link-playground">Playground</a>
+          <a href="#customize" class="nav-link" id="nav-link-customize">Moods</a>
+          <a href="#brand" class="nav-link" id="nav-link-brand">Guidelines</a>
+          <a href="#faq" class="nav-link" id="nav-link-faq">FAQ</a>
+        </nav>
+        <div class="nav-actions">
+          <a href="https://github.com/AmanYadav007/bwithu-extension" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm" id="nav-btn-source">Github</a>
+          <a href="#" class="btn btn-primary btn-sm btn-glow" id="nav-btn-download">Add to Chrome</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+      <!-- Hero Section -->
+      <section class="hero-section" id="hero">
+        <div class="section-container hero-grid">
+          <div class="hero-content">
+            <span class="badge" id="hero-badge">⚡ Now powered by Grok Voice AI</span>
+            <h1 class="hero-title" id="hero-main-title">
+              Your AI companion,<br />
+              <span class="gradient-text">always with you.</span>
+            </h1>
+            <p class="hero-subtitle" id="hero-main-subtitle">
+              Meet Bumi, a warm, living digital bear who shares your browser. Unlike rigid, robotic bots, Bumi feels emotionally present-reacting, listening, and transforming productivity with natural voice interactions, smart search, and calendar integration.
+            </p>
+            <div class="hero-actions" id="hero-cta-buttons">
+              <a href="#playground" class="btn btn-primary btn-lg btn-glow" id="hero-btn-primary">Meet Bumi Live</a>
+              <a href="#features" class="btn btn-secondary btn-lg" id="hero-btn-secondary">Explore Features</a>
+            </div>
+            <div class="hero-stats" id="hero-install-stats">
+              <div class="stat-item">
+                <span class="stat-num">V3</span>
+                <span class="stat-label">Manifest Ready</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-num">&lt;50ms</span>
+                <span class="stat-label">Voice Latency</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-num">100%</span>
+                <span class="stat-label">Local & Secure</span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Hero Companion Widget -->
+          <div class="hero-visual" id="hero-mascot-visual">
+            <div class="companion-glass-card">
+              <div class="companion-glow-ring"></div>
+              <div class="companion-visual-inner">
+                <img src="assets/mascot.png" alt="Bumi Bear Mascot" class="hero-mascot-image" id="hero-interactive-mascot" />
+                <div class="live-status-dot"></div>
+              </div>
+              <div class="floating-speech-bubble" id="hero-speech-bubble">
+                <span class="typewriter-text" id="hero-bubble-text">Hi! I'm Bumi. Click below to chat or play with me!</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Simulated Companion Playground (LIVE INTERACTION) -->
+      <section class="playground-section" id="playground">
+        <div class="section-container">
+          <div class="section-header">
+            <span class="section-badge">Playground</span>
+            <h2>Experience Bumi in Real-Time</h2>
+            <p class="section-description">
+              Try out Bumi's browser abilities right here. Click a command chip below or chat with him to see how he reacts and runs smart actions in his simulated browser tab.
+            </p>
+          </div>
+
+          <div class="playground-grid">
+            <!-- Simulated Browser UI -->
+            <div class="browser-mockup" id="browser-simulation">
+              <div class="browser-header">
+                <div class="browser-dots">
+                  <span class="dot-red"></span>
+                  <span class="dot-yellow"></span>
+                  <span class="dot-green"></span>
+                </div>
+                <div class="browser-tabs">
+                  <div class="tab active" id="sim-tab-1">
+                    <span class="tab-icon">🌐</span>
+                    <span class="tab-title" id="sim-tab-title-1">Researching...</span>
+                  </div>
+                  <div class="tab" id="sim-tab-add">
+                    <span class="tab-add">+</span>
+                  </div>
+                </div>
+                <div class="browser-address-bar">
+                  <span class="lock-icon">🔒</span>
+                  <input type="text" value="https://bwithu.ai/playground" class="address-input" readonly id="sim-address-input" />
+                </div>
+              </div>
+
+              <div class="browser-body">
+                <!-- Inner Page Simulation -->
+                <div class="browser-viewport" id="sim-viewport">
+                  <div class="viewport-default-content" id="sim-viewport-default">
+                    <h3>Subtle & Smart Tab Summary</h3>
+                    <p>Bumi is currently watching this page. Ask him to summarize, search, or create an invite to see tabs react live in this browser screen.</p>
+                    <div class="mock-article-skeleton">
+                      <div class="sk-line sk-1"></div>
+                      <div class="sk-line sk-2"></div>
+                      <div class="sk-line sk-3"></div>
+                    </div>
+                  </div>
+                  
+                  <!-- Browser Action Overlay Simulations -->
+                  <div class="sim-overlay hidden" id="sim-overlay-search">
+                    <div class="sim-search-tab">
+                      <h4>🔍 Google Search Results</h4>
+                      <div class="search-result-item">
+                        <h5>Latest AI Agents and Companions in 2026</h5>
+                        <p>BwithU emerges as a top-tier browser companion featuring winking animation, custom Grok integration, and full tab context understanding.</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="sim-overlay hidden" id="sim-overlay-calendar">
+                    <div class="sim-calendar-event">
+                      <div class="calendar-card">
+                        <span class="cal-badge">📅 Event Created</span>
+                        <h4>Team Alignment Call</h4>
+                        <p class="cal-time">🕒 Tomorrow, 2:00 PM - 2:30 PM</p>
+                        <p class="cal-location">🎥 Google Meet Attached</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Chat Simulation Sidebar -->
+                <div class="browser-sidebar">
+                  <div class="sidebar-header">
+                    <span>Bumi Extension</span>
+                    <span class="sidebar-online">online</span>
+                  </div>
+                  
+                  <!-- Speech Panel -->
+                  <div class="chat-log" id="playground-chat-log">
+                    <div class="chat-turn assistant-turn">
+                      <div class="chat-avatar">🐻</div>
+                      <div class="chat-message-bubble">
+                        <span class="chat-message-text" id="playground-current-response">Hi, I'm Bumi! Click a command chip below or send me a text message. Let's make browser actions magical!</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Input Panel -->
+                  <div class="chat-input-area">
+                    <form id="playground-chat-form" onsubmit="return false;">
+                      <input type="text" id="playground-chat-input" placeholder="Type a message to Bumi..." autocomplete="off" />
+                      <button type="submit" class="chat-send-btn" id="playground-send-btn">➔</button>
+                    </form>
+                  </div>
+                </div>
+
+                <!-- Sim Overlay Character -->
+                <div class="browser-character" id="sim-character-container">
+                  <div class="sim-bear-wrapper">
+                    <img src="assets/mascot.png" alt="Playground Mascot" class="sim-mascot-img animate-float" id="sim-mascot-element" />
+                    <div class="sim-speech-bubble hidden" id="sim-speech-bubble-el">
+                      <span class="sim-bubble-text" id="sim-bubble-text-el">...</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Interactivity Panel -->
+            <div class="playground-controls">
+              <h3>Action Chips</h3>
+              <p>Trigger complex browser actions with a single click. See how Bumi leverages tab controls and calendar commands.</p>
+              
+              <div class="action-chips">
+                <button class="chip" id="chip-search">
+                  <span class="chip-icon">🔍</span>
+                  <span class="chip-text">"Bumi, search latest AI news"</span>
+                </button>
+                <button class="chip" id="chip-calendar">
+                  <span class="chip-icon">📅</span>
+                  <span class="chip-text">"Schedule a Team Sync tomorrow at 2 PM"</span>
+                </button>
+                <button class="chip" id="chip-summary">
+                  <span class="chip-icon">🌐</span>
+                  <span class="chip-text">"Summarize this page"</span>
+                </button>
+                <button class="chip" id="chip-joke">
+                  <span class="chip-icon">✨</span>
+                  <span class="chip-text">"Tell me a warm greeting"</span>
+                </button>
+              </div>
+
+              <div class="playground-feature-preview">
+                <h4>Dynamic Interaction Logs</h4>
+                <div class="console-box" id="playground-console">
+                  <div class="console-line text-muted">[System] Ready. Click a chip or type above to start.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Key Features Section -->
+      <section class="features-section" id="features">
+        <div class="section-container">
+          <div class="section-header">
+            <span class="section-badge">Features</span>
+            <h2>Productivity Magic & Companion Vibes</h2>
+            <p class="section-description">
+              BwithU packs state-of-the-art AI into a warm, gentle presence. It's helpful without being intrusive.
+            </p>
+          </div>
+
+          <div class="features-grid">
+            <!-- Feature Card 1 -->
+            <div class="feature-card-premium" id="feat-1">
+              <div class="feat-glow"></div>
+              <span class="feat-icon">🎙️</span>
+              <h3>AI Real-Time Voice</h3>
+              <p>
+                Powered by xAI's high-speed voice engine. Converse naturally with under 50ms latency. Speaks with standard emotional warmth, pauses, and friendly inflection.
+              </p>
+            </div>
+
+            <!-- Feature Card 2 -->
+            <div class="feature-card-premium" id="feat-2">
+              <div class="feat-glow"></div>
+              <span class="feat-icon">🔍</span>
+              <h3>Brave Search Integration</h3>
+              <p>
+                Whenever you ask current, real-time facts, Bumi automatically uses his Brave search integration to scan the web and answer with reliable citations.
+              </p>
+            </div>
+
+            <!-- Feature Card 3 -->
+            <div class="feature-card-premium" id="feat-3">
+              <div class="feat-glow"></div>
+              <span class="feat-icon">📑</span>
+              <h3>Browser Context Layer</h3>
+              <p>
+                Bumi is fully context-aware. He understands the text of your current tab and is ready to summarize articles, write reviews, or help research options.
+              </p>
+            </div>
+
+            <!-- Feature Card 4 -->
+            <div class="feature-card-premium" id="feat-4">
+              <div class="feat-glow"></div>
+              <span class="feat-icon">📅</span>
+              <h3>Smart Calendar Invites</h3>
+              <p>
+                No more toggling forms. Type or say what meeting you need, and Bumi drafts a prefilled Google Calendar invite with single-click OAuth and Google Meet.
+              </p>
+            </div>
+
+            <!-- Feature Card 5 -->
+            <div class="feature-card-premium" id="feat-5">
+              <div class="feat-glow"></div>
+              <span class="feat-icon">🧸</span>
+              <h3>Active Companion Vibes</h3>
+              <p>
+                Bumi reacts dynamically to your movements. He tilts his head when you hover, yawns if idle, waves on drag, and blinks organically.
+              </p>
+            </div>
+
+            <!-- Feature Card 6 -->
+            <div class="feature-card-premium" id="feat-6">
+              <div class="feat-glow"></div>
+              <span class="feat-icon">🔒</span>
+              <h3>100% Privacy Focused</h3>
+              <p>
+                Your API keys are stored locally on your device. Bumi only reads tab content when you ask him to, and never sells or uploads browser logs.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Interactive Mood Customizer -->
+      <section class="customizer-section" id="customize">
+        <div class="section-container customizer-grid">
+          <div class="customizer-visual" id="customizer-companion-visual">
+            <div class="customizer-glass-card">
+              <div class="customizer-glow-layer" id="mood-glow-ring"></div>
+              <img src="assets/mascot.png" alt="Customizer Mascot" class="customizer-mascot-image animate-float" id="customizer-mascot" />
+              
+              <!-- Sparkle details -->
+              <span class="sparkle sp-1">✨</span>
+              <span class="sparkle sp-2">⭐</span>
+              <span class="sparkle sp-3">✨</span>
+
+              <div class="customizer-balloon" id="customizer-balloon-el">
+                <span class="balloon-text" id="customizer-balloon-text">I'm feeling warm and calm!</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="customizer-content">
+            <span class="section-badge">Personality Toggles</span>
+            <h2>Tune Bumi's Current Mood</h2>
+            <p>
+              Bumi is built to feel alive and responsive. Switch between his core emotional behaviors to preview his glowing accent changes and speech themes.
+            </p>
+            
+            <div class="mood-selector-buttons" id="mood-buttons-grid">
+              <button class="btn-mood active" data-mood="idle" id="mood-btn-idle">
+                <span class="mood-icon">🌸</span>
+                <span class="mood-name">Idle / Warm</span>
+              </button>
+              <button class="btn-mood" data-mood="thinking" id="mood-btn-thinking">
+                <span class="mood-icon">💡</span>
+                <span class="mood-name">Thinking</span>
+              </button>
+              <button class="btn-mood" data-mood="listening" id="mood-btn-listening">
+                <span class="mood-icon">🎙️</span>
+                <span class="mood-name">Listening</span>
+              </button>
+              <button class="btn-mood" data-mood="yawning" id="mood-btn-yawning">
+                <span class="mood-icon">💤</span>
+                <span class="mood-name">Sleepy / Yawn</span>
+              </button>
+            </div>
+
+            <div class="mood-explanation-box">
+              <h4 id="mood-explanation-title">Idle / Warm Accent</h4>
+              <p id="mood-explanation-desc">
+                Bumi is in his natural resting state. He undergoes tiny breath movements, occasional winks, and is content to float gently beside your page.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Brand Guidelines / Core Philosophy -->
+      <section class="brand-section" id="brand">
+        <div class="section-container">
+          <div class="section-header">
+            <span class="section-badge">Core Vision</span>
+            <h2>The BwithU Philosophy</h2>
+            <p class="section-description">
+              Adhering to our core guidelines: Bumi is built to feel helpful, warm, and futuristic. Never cold, never robotic, and never overwhelming.
+            </p>
+          </div>
+
+          <div class="brand-traits-grid">
+            <div class="trait-card" id="trait-warm">
+              <h4>Warm</h4>
+              <p>Designed with friendly colors, speech bubble greetings, and conversational ease.</p>
+            </div>
+            <div class="trait-card" id="trait-futuristic">
+              <h4>Futuristic</h4>
+              <p>Sleek glassmorphism overlay widgets, real-time voice, and context-aware capabilities.</p>
+            </div>
+            <div class="trait-card" id="trait-calm">
+              <h4>Calm</h4>
+              <p>Gentle and helpful. Exists quietly in the corner, appearing only when called upon.</p>
+            </div>
+            <div class="trait-card" id="trait-present">
+              <h4>Emotionally Present</h4>
+              <p>Tiny weightless micro-animations and breathing states reflect life and companion vibes.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FAQ Section -->
+      <section class="faq-section" id="faq">
+        <div class="section-container">
+          <div class="section-header">
+            <span class="section-badge">FAQ</span>
+            <h2>Common Questions</h2>
+            <p class="section-description">Everything you need to know about bringing Bumi into your workflow.</p>
+          </div>
+
+          <div class="faq-accordion" id="faq-accordion-group">
+            <div class="faq-item" id="faq-item-1">
+              <button class="faq-question" id="faq-q-1">
+                <span>How does BwithU connect with Grok Voice?</span>
+                <span class="faq-arrow">▼</span>
+              </button>
+              <div class="faq-answer">
+                <p>
+                  BwithU links directly to the xAI Grok API. By entering your personal xAI API key locally, the extension establishes a high-speed secure WebSocket connection directly with Grok's Voice server, facilitating ultra-low latency real-time voice interaction.
+                </p>
+              </div>
+            </div>
+
+            <div class="faq-item" id="faq-item-2">
+              <button class="faq-question" id="faq-q-2">
+                <span>Does the extension read my banking or private data?</span>
+                <span class="faq-arrow">▼</span>
+              </button>
+              <div class="faq-answer">
+                <p>
+                  Absolutely not. BwithU is 100% private. It operates on a strict user-triggered context model. It only gathers page text context when you specifically query Bumi, and all data and API secrets are stored locally within Chrome's secure storage. No data is sent to external servers other than directly to xAI.
+                </p>
+              </div>
+            </div>
+
+            <div class="faq-item" id="faq-item-3">
+              <button class="faq-question" id="faq-q-3">
+                <span>Do I need special APIs for Google Calendar & Brave Search?</span>
+                <span class="faq-arrow">▼</span>
+              </button>
+              <div class="faq-answer">
+                <p>
+                  Brave Search uses a standard Brave Search developer key to fetch search results. For Google Calendar, BwithU uses built-in Chrome identity OAuth to request single-click permissions, letting you create actual calendar invites without typing fields.
+                </p>
+              </div>
+            </div>
+
+            <div class="faq-item" id="faq-item-4">
+              <button class="faq-question" id="faq-q-4">
+                <span>Is this extension free to run?</span>
+                <span class="faq-arrow">▼</span>
+              </button>
+              <div class="faq-answer">
+                <p>
+                  Yes, BwithU is open-source. Since you provide your own xAI API key and Brave Developer key, you only pay exactly what you consume directly to the API providers, with zero markups or subscription fees from BwithU.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Bottom Call To Action (Newsletter & Download) -->
+      <section class="cta-bottom-section" id="download">
+        <div class="section-container">
+          <div class="cta-glass-banner">
+            <div class="cta-banner-glow" aria-hidden="true"></div>
+            <h2 id="cta-header">Bring Bumi to your browser today</h2>
+            <p id="cta-subheader">Empower your navigation with a living companion. Fast, intuitive, and always with you.</p>
+            <div class="cta-action-row">
+              <a href="#" class="btn btn-primary btn-lg btn-glow" id="cta-btn-install">Add to Chrome</a>
+              <a href="#playground" class="btn btn-secondary btn-lg" id="cta-btn-try">Try Live Demo</a>
+            </div>
+            
+            <!-- Sleek Newsletter Form -->
+            <div class="newsletter-box">
+              <h4>Get Beta Updates</h4>
+              <form class="newsletter-form" id="cta-newsletter-form" onsubmit="return false;">
+                <input type="email" placeholder="Enter your email" required id="cta-newsletter-email" autocomplete="off" />
+                <button type="submit" class="btn btn-primary" id="cta-newsletter-submit">Subscribe</button>
+              </form>
+              <span class="form-feedback hidden" id="newsletter-feedback">✨ Thanks for joining! We'll keep you in the loop.</span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer-glass">
+      <div class="section-container footer-grid">
+        <div class="footer-brand">
+          <img src="assets/logo.png" alt="BwithU Logo" class="footer-logo-img" />
+          <span class="footer-brand-text">Bwith<span class="cyan-highlight">U</span></span>
+          <p>Your AI companion, always with you.</p>
+        </div>
+        <div class="footer-links">
+          <h5>Companion</h5>
+          <a href="#features">Features</a>
+          <a href="#playground">Playground</a>
+          <a href="#customize">Mood customizer</a>
+        </div>
+        <div class="footer-links">
+          <h5>Resources</h5>
+          <a href="#brand">Guidelines</a>
+          <a href="#faq">FAQ</a>
+          <a href="https://github.com/AmanYadav007/bwithu-extension" target="_blank" rel="noopener noreferrer">Github Repository</a>
+        </div>
+        <div class="footer-links">
+          <h5>Legal</h5>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Use</a>
+          <a href="#">hello@bwithu.app</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 BwithU. Built with HSL glows, glassmorphism, and love to help you do more online.</p>
+      </div>
+    </footer>
+
+    <!-- Core Interactions -->
+    <script src="script.js"></script>
+  </body>
+</html>
