@@ -1,0 +1,201 @@
+@import 'tailwindcss';
+
+/* Brand tokens — straight from the BwithU brand guidelines. */
+@theme {
+  --color-space: #060816;
+  --color-space-2: #0b0e24;
+  --color-space-3: #12163a;
+  --color-aurora: #a855f7;
+  --color-aurora-soft: #c084fc;
+  --color-cyan: #38bdf8;
+  --color-cyan-soft: #7dd3fc;
+  --color-ink: #f5f7ff;
+  --color-ink-2: #c7cbe6;
+  --color-ink-3: #8a90b4;
+  --color-ink-4: #5b6088;
+  --color-line: rgb(245 247 255 / 0.08);
+  --color-line-2: rgb(245 247 255 / 0.14);
+
+  --font-display: 'Poppins', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+
+  --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --animate-breathe: breathe 5.5s var(--ease-soft) infinite;
+  --animate-drift: drift 22s ease-in-out infinite;
+  --animate-blink: blink 6s steps(1) infinite;
+
+  @keyframes breathe {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-6px) scale(1.012); }
+  }
+  @keyframes drift {
+    0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+    33% { transform: translate3d(4%, -3%, 0) scale(1.06); }
+    66% { transform: translate3d(-3%, 4%, 0) scale(0.97); }
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 96px;
+    color-scheme: dark;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-space text-ink font-sans antialiased;
+    overflow-x: clip;
+    font-feature-settings: 'cv11', 'ss01';
+    text-rendering: optimizeLegibility;
+  }
+  h1, h2, h3, h4 {
+    @apply font-display text-balance;
+  }
+  p {
+    @apply text-pretty;
+  }
+  ::selection {
+    background: rgb(168 85 247 / 0.45);
+    color: var(--color-ink);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-cyan);
+    outline-offset: 3px;
+    border-radius: 10px;
+  }
+}
+
+@layer components {
+  .container-x {
+    @apply mx-auto w-full max-w-[1200px] px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Glass surface: the one card treatment used everywhere. */
+  .glass {
+    background:
+      linear-gradient(180deg, rgb(245 247 255 / 0.06), rgb(245 247 255 / 0.02)),
+      rgb(11 14 36 / 0.55);
+    border: 1px solid var(--color-line);
+    box-shadow:
+      inset 0 1px 0 rgb(245 247 255 / 0.06),
+      0 24px 60px -24px rgb(0 0 0 / 0.6);
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+  }
+
+  .eyebrow {
+    @apply inline-flex items-center gap-2 font-display text-[13px] font-medium tracking-[0.02em] text-cyan-soft;
+  }
+
+  .text-gradient {
+    background: linear-gradient(100deg, var(--color-aurora-soft) 0%, #a5b4fc 45%, var(--color-cyan) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .btn {
+    @apply relative inline-flex items-center justify-center gap-2 rounded-full font-display font-medium whitespace-nowrap select-none;
+    transition: transform 0.4s var(--ease-soft), box-shadow 0.4s var(--ease-soft), background-color 0.3s, border-color 0.3s;
+  }
+  .btn:active {
+    transform: scale(0.98);
+  }
+  .btn-primary {
+    @apply text-white;
+    background: linear-gradient(135deg, #9b4dff 0%, #7c6cff 50%, #38bdf8 130%);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.25),
+      0 10px 30px -10px rgb(168 85 247 / 0.7);
+  }
+  .btn-primary:hover {
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.3),
+      0 14px 40px -10px rgb(168 85 247 / 0.9),
+      0 0 0 4px rgb(168 85 247 / 0.12);
+    transform: translateY(-1px);
+  }
+  .btn-ghost {
+    @apply text-ink;
+    background: rgb(245 247 255 / 0.04);
+    border: 1px solid var(--color-line-2);
+  }
+  .btn-ghost:hover {
+    background: rgb(245 247 255 / 0.08);
+    border-color: rgb(245 247 255 / 0.22);
+  }
+
+  /* Hairline that fades out at both ends. */
+  .hairline {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--color-line-2), transparent);
+  }
+
+  /* Film grain to keep big gradients from banding. */
+  .grain::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.05;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+}
+
+/* ---------- Pixel world: mirrors the extension's side panel (pixelWorld.css) ---------- */
+@font-face {
+  font-family: 'Jersey 10';
+  src: url('/fonts/jersey-10-latin.woff2') format('woff2');
+  font-display: swap;
+}
+
+.px-world {
+  --px-ink: #120c24;
+  --px-night: #1f1640;
+  --px-cream: #fff4dc;
+  --px-yellow: #f7c948;
+  --px-blue: #3f6fd8;
+  --px-green: #3c9a2a;
+  --px-red: #d9433a;
+  --px-lavender: #b9b4f2;
+  font-family: 'Jersey 10', ui-monospace, monospace;
+  font-synthesis: none;
+  background: var(--px-night);
+  position: relative;
+  isolation: isolate;
+}
+.px-world::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: url('/pixel/room.png') 35% 42% / cover no-repeat;
+  image-rendering: pixelated;
+}
+.px-box,
+.px-bubble-user,
+.px-bubble-bot {
+  border: 3px solid var(--px-ink);
+  box-shadow: 4px 4px 0 var(--px-ink);
+}
+.px-bubble-user {
+  background: var(--px-blue);
+  color: #fff;
+}
+.px-bubble-bot {
+  background: var(--px-cream);
+  color: var(--px-ink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
