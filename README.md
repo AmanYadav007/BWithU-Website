@@ -11,7 +11,7 @@ npm run build     # type-checks, then outputs dist/
 npm run preview
 ```
 
-Deploys to Vercel as-is (`vercel.json` enables clean URLs, so `/privacy` serves `privacy.html`).
+Deploys to Netlify: `netlify.toml` runs `npm run build` and publishes `dist/` (`/privacy` serves `privacy.html`).
 
 ## Going live checklist
 
@@ -19,7 +19,7 @@ All switches live in `src/lib/site.ts`:
 
 - `chromeStoreUrl` — paste the Chrome Web Store link. Every CTA flips from "Get early access" to "Add to Chrome".
 - `sheetsUrl` — the Google Apps Script web-app URL (already set). The waitlist form appends each signup (Timestamp, Email, Source) to the Google Sheet. Setup steps are at the top of `google-sheets/waitlist.gs`; set `VITE_SHEETS_URL` to point a build at a different sheet.
-- `url`, `email`, `x`, `github` — check these. The canonical domain (`https://bwithu.ai`) is also hard-coded in `index.html`, `privacy.html`, `public/robots.txt` and `public/sitemap.xml`.
+- `url`, `email`, `x`, `github` — check these. The canonical domain (`https://bwithu.live`) is also hard-coded in `index.html`, `privacy.html`, `public/robots.txt` and `public/sitemap.xml`.
 
 ## Structure
 

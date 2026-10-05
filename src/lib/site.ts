@@ -5,7 +5,7 @@
 export const site = {
   name: 'BwithU',
   tagline: 'Your AI companion, always with you.',
-  url: 'https://bwithu.ai',
+  url: 'https://bwithu.live',
   email: 'hello@bwithu.app',
   github: 'https://github.com/AmanYadav007/bwithu-extension',
   x: 'https://x.com/BwithUAI',

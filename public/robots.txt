@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://bwithu.ai/sitemap.xml
+Sitemap: https://bwithu.live/sitemap.xml
