@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>BwithU — Your AI companion, always with you</title>
-    <meta name="description" content="BwithU is a warm voice companion that lives in your Chrome side panel. Talk out loud, ask about your open tabs, search the web, and get things done. Free in beta, no account or API keys." />
+    <title>BwithU — An AI companion you can video-call</title>
+    <meta name="description" content="BwithU is a warm AI companion you can video-call in your browser. Pick a face and a voice, give them a name, and just talk. No app, no sign-up, 10 free minutes a day." />
     <link rel="canonical" href="https://bwithu.live/" />
     <meta name="theme-color" content="#060816" />
     <meta name="color-scheme" content="dark" />
@@ -17,29 +17,31 @@
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="BwithU" />
     <meta property="og:url" content="https://bwithu.live/" />
-    <meta property="og:title" content="BwithU — Your AI companion, always with you" />
-    <meta property="og:description" content="A warm voice companion in your Chrome side panel. Talk, ask about your tabs, look things up." />
+    <meta property="og:title" content="BwithU — Someone to talk to. Face to face." />
+    <meta property="og:description" content="A warm AI companion you can video-call in your browser. No app, no sign-up." />
     <meta property="og:image" content="https://bwithu.live/og.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@BwithUAI" />
-    <meta name="twitter:title" content="BwithU — Your AI companion, always with you" />
-    <meta name="twitter:description" content="A warm voice companion in your Chrome side panel. Talk, ask about your tabs, look things up." />
+    <meta name="twitter:title" content="BwithU — Someone to talk to. Face to face." />
+    <meta name="twitter:description" content="A warm AI companion you can video-call in your browser. No app, no sign-up." />
     <meta name="twitter:image" content="https://bwithu.live/og.png" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600&display=swap" rel="stylesheet" />
+    <link rel="preload" as="image" href="/faces/maya.jpg" />
 
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "SoftwareApplication",
+        "@type": "WebApplication",
         "name": "BwithU",
-        "applicationCategory": "BrowserApplication",
-        "operatingSystem": "Chrome",
-        "description": "A warm voice companion that lives in your Chrome side panel. Talk out loud, ask about your open tabs, search the web, and get small things done.",
+        "applicationCategory": "LifestyleApplication",
+        "operatingSystem": "Any (web browser)",
+        "browserRequirements": "Chrome, Safari or Edge with a microphone",
+        "description": "A warm AI companion you can video-call in your browser. Pick a face and a voice, give them a name, and just talk.",
         "url": "https://bwithu.live/",
         "image": "https://bwithu.live/og.png",
         "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
@@ -51,18 +53,20 @@
         "@context": "https://schema.org",
         "@type": "FAQPage",
         "mainEntity": [
-          { "@type": "Question", "name": "Is BwithU free?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. During the beta it's free, with friendly daily limits so it stays fast for everyone. Live voice calls run up to 10 minutes each." } },
-          { "@type": "Question", "name": "Do I need an API key or an account?", "acceptedAnswer": { "@type": "Answer", "text": "No. Install it, pick a companion, and start talking. There's nothing to sign up for and no keys to paste." } },
-          { "@type": "Question", "name": "Is B listening all the time?", "acceptedAnswer": { "@type": "Answer", "text": "No. B only hears you while the mic is on, and you turn it on yourself. Your audio is never recorded or stored." } },
-          { "@type": "Question", "name": "What can B see on my screen?", "acceptedAnswer": { "@type": "Answer", "text": "When you talk to B, it reads the title, address and visible text of your open tabs (up to 12) so it can answer questions about them. It doesn't look at pages when you're not using it." } },
-          { "@type": "Question", "name": "Can B control my browser?", "acceptedAnswer": { "@type": "Answer", "text": "A little, and only with your OK. B can open a site, switch to a tab, run a search, or draft a Google Calendar invite for you to review. It asks before doing any of these." } }
+          { "@type": "Question", "name": "Is BwithU free?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Everyone gets 10 free minutes a day, and a single call can run up to 10 minutes. No card, no trial." } },
+          { "@type": "Question", "name": "Do I need to download an app or make an account?", "acceptedAnswer": { "@type": "Answer", "text": "No. Open app.bwithu.live in your browser, pick a companion and start talking. There's nothing to install or sign up for." } },
+          { "@type": "Question", "name": "Is it a real person?", "acceptedAnswer": { "@type": "Answer", "text": "No. Your companion is an AI with a lifelike face and voice. It will always tell you it's an AI if you ask." } },
+          { "@type": "Question", "name": "Are my calls recorded?", "acceptedAnswer": { "@type": "Answer", "text": "No. Your voice is sent to our AI providers to understand you and reply in real time, and then it's gone. We don't store audio or transcripts." } },
+          { "@type": "Question", "name": "Which devices work?", "acceptedAnswer": { "@type": "Answer", "text": "Chrome, Safari and Edge on phones, tablets and computers. Headphones give the smoothest conversation, so your companion doesn't hear itself." } },
+          { "@type": "Question", "name": "What languages can I speak?", "acceptedAnswer": { "@type": "Answer", "text": "English works best today. Your companion understands many languages and tries to reply in the one you speak." } },
+          { "@type": "Question", "name": "Can I make a companion from my own photo?", "acceptedAnswer": { "@type": "Answer", "text": "Soon. Join the list and we'll email you when it's ready. Custom companions will be private to you." } }
         ]
       }
     </script>
   </head>
   <body>
     <div id="root"></div>
-    <noscript>BwithU is a warm voice companion for your Chrome side panel. Please enable JavaScript to see the site.</noscript>
+    <noscript>BwithU is a warm AI companion you can video-call at https://app.bwithu.live. Please enable JavaScript to see this site.</noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

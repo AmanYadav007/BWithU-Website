@@ -1,0 +1,4 @@
+# Cloudflare Pages redirects. The privacy policy and terms live with the call app.
+/privacy  https://app.bwithu.live/ui/privacy.html  302
+/terms    https://app.bwithu.live/ui/terms.html    302
+/app      https://app.bwithu.live/              302

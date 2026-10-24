@@ -1,13 +1,13 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { installHref, installLabel, isLive } from '../lib/site'
-import { ChromeIcon } from './ChromeIcon'
+import { appLink } from '../lib/site'
 import { Logo } from './Logo'
 
 const links = [
-  { href: '/#demo', label: 'See it' },
-  { href: '/#features', label: 'What B does' },
+  { href: '/#features', label: 'What it’s like' },
+  { href: '/#faces', label: 'Faces' },
+  { href: '/#voices', label: 'Voices' },
   { href: '/#privacy', label: 'Privacy' },
   { href: '/#faq', label: 'FAQ' },
 ]
@@ -55,10 +55,9 @@ export function Nav() {
           </div>
 
           <div className="flex items-center gap-2">
-            <a href={installHref} className="btn btn-primary h-10 px-4 text-[14px]" {...(isLive && { target: '_blank', rel: 'noopener' })}>
-              <ChromeIcon />
-              <span className="hidden sm:inline">{installLabel}</span>
-              <span className="sm:hidden">{isLive ? 'Install' : 'Join'}</span>
+            <a href={appLink()} className="btn btn-primary h-10 px-4 text-[14px]">
+              <span className="hidden sm:inline">Start a free call</span>
+              <span className="sm:hidden">Start a call</span>
             </a>
             <button
               type="button"

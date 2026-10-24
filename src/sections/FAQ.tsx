@@ -7,31 +7,31 @@ import { SectionHeader } from '../components/SectionHeader'
 export const faqs = [
   {
     q: 'Is BwithU free?',
-    a: 'Yes. During the beta it’s free, with friendly daily limits so it stays fast for everyone. Live voice calls run up to 10 minutes each.',
+    a: 'Yes. Everyone gets 10 free minutes a day, and a single call can run up to 10 minutes. No card, no trial.',
   },
   {
-    q: 'Do I need an API key or an account?',
-    a: 'No. Install it, pick a companion, and start talking. There’s nothing to sign up for and no keys to paste.',
+    q: 'Do I need to download an app or make an account?',
+    a: 'No. Open app.bwithu.live in your browser, pick a companion and start talking. There’s nothing to install or sign up for.',
   },
   {
-    q: 'Is B listening all the time?',
-    a: 'No. B only hears you while the mic is on, and you turn it on yourself. Your audio is never recorded or stored.',
+    q: 'Is it a real person?',
+    a: 'No. Your companion is an AI with a lifelike face and voice. It will always tell you it’s an AI if you ask.',
   },
   {
-    q: 'What can B see on my screen?',
-    a: 'When you talk to B, it reads the title, address and visible text of your open tabs (up to 12) so it can answer questions about them. It doesn’t look at pages when you’re not using it.',
+    q: 'Are my calls recorded?',
+    a: 'No. Your voice is sent to our AI providers to understand you and reply in real time, and then it’s gone. We don’t store audio or transcripts.',
   },
   {
-    q: 'Can B control my browser?',
-    a: 'A little, and only with your OK. B can open a site, switch to a tab, run a search, or draft a Google Calendar invite for you to review. It asks before doing any of these.',
+    q: 'Which devices work?',
+    a: 'Chrome, Safari and Edge on phones, tablets and computers. Headphones give the smoothest conversation, so your companion doesn’t hear itself.',
   },
   {
-    q: 'Which browsers does it work in?',
-    a: 'Chrome 116 or newer, on Mac, Windows, Linux and ChromeOS. Desktop apps for macOS and Windows are on the way.',
+    q: 'What languages can I speak?',
+    a: 'English works best today. Your companion understands many languages and tries to reply in the one you speak.',
   },
   {
-    q: 'Can I change my companion’s name or face?',
-    a: 'Yes. You name them on day one, and you can pick between companions. Custom companions made from your own photo are coming soon.',
+    q: 'Can I make a companion from my own photo?',
+    a: 'Soon. Join the list above and we’ll email you when it’s ready. Custom companions will be private to you.',
   },
 ]
 

@@ -144,49 +144,10 @@
   }
 }
 
-/* ---------- Pixel world: mirrors the extension's side panel (pixelWorld.css) ---------- */
-@font-face {
-  font-family: 'Jersey 10';
-  src: url('/fonts/jersey-10-latin.woff2') format('woff2');
-  font-display: swap;
-}
-
-.px-world {
-  --px-ink: #120c24;
-  --px-night: #1f1640;
-  --px-cream: #fff4dc;
-  --px-yellow: #f7c948;
-  --px-blue: #3f6fd8;
-  --px-green: #3c9a2a;
-  --px-red: #d9433a;
-  --px-lavender: #b9b4f2;
-  font-family: 'Jersey 10', ui-monospace, monospace;
-  font-synthesis: none;
-  background: var(--px-night);
-  position: relative;
-  isolation: isolate;
-}
-.px-world::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background: url('/pixel/room.png') 35% 42% / cover no-repeat;
-  image-rendering: pixelated;
-}
-.px-box,
-.px-bubble-user,
-.px-bubble-bot {
-  border: 3px solid var(--px-ink);
-  box-shadow: 4px 4px 0 var(--px-ink);
-}
-.px-bubble-user {
-  background: var(--px-blue);
-  color: #fff;
-}
-.px-bubble-bot {
-  background: var(--px-cream);
-  color: var(--px-ink);
+/* Voice sample equalizer bars. */
+@keyframes eq {
+  from { height: 25%; }
+  to { height: 100%; }
 }
 
 @media (prefers-reduced-motion: reduce) {

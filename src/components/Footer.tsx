@@ -1,12 +1,13 @@
-import { site } from '../lib/site'
+import { appLink, site } from '../lib/site'
 import { Logo } from './Logo'
 
 const cols = [
   {
     title: 'Product',
     links: [
-      { label: 'See it', href: '/#demo' },
-      { label: 'What B does', href: '/#features' },
+      { label: 'Start a call', href: appLink() },
+      { label: 'Faces', href: '/#faces' },
+      { label: 'Voices', href: '/#voices' },
       { label: 'How it works', href: '/#how' },
       { label: 'FAQ', href: '/#faq' },
     ],
@@ -14,8 +15,8 @@ const cols = [
   {
     title: 'Company',
     links: [
-      { label: 'Privacy policy', href: '/privacy' },
-      { label: 'GitHub', href: site.github, external: true },
+      { label: 'Privacy policy', href: site.privacy },
+      { label: 'Terms', href: site.terms },
       { label: 'X / Twitter', href: site.x, external: true },
       { label: site.email, href: `mailto:${site.email}` },
     ],
@@ -28,7 +29,7 @@ export function Footer() {
       <div className="container-x grid gap-12 py-16 md:grid-cols-[1.4fr_1fr_1fr]">
         <div>
           <Logo />
-          <p className="mt-4 max-w-xs text-[15px] leading-relaxed text-ink-3">{site.tagline} Made with care for people who spend their days online.</p>
+          <p className="mt-4 max-w-xs text-[15px] leading-relaxed text-ink-3">{site.tagline} A warm AI companion you can video-call, right in your browser.</p>
         </div>
         {cols.map((c) => (
           <div key={c.title}>

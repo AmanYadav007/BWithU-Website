@@ -1,7 +1,7 @@
 {
   "name": "BwithU",
   "short_name": "BwithU",
-  "description": "Your AI companion, always with you.",
+  "description": "A warm AI companion you can video-call in your browser.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#060816",
