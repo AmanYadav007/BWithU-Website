@@ -1,6 +1,6 @@
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { Mic, PhoneOff, Volume2 } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 /** A scripted look at the call screen: the same layout and caption behaviour as the real app. */
 const SCRIPT = [
@@ -12,8 +12,17 @@ const CHARS_PER_SECOND = 16 // same reveal pace as the app's captions
 
 type Phase = 'listening' | 'thinking' | 'speaking' | 'pause'
 
-export function CallMock({ face = '/faces/maya.jpg', name = 'Maya' }: { face?: string; name?: string }) {
+type Props = {
+  name?: string
+  /** Resting frame, shown while listening. */
+  idle?: string
+  /** Silent loop of the real 3D avatar talking (recorded from the app); idle is its first frame. */
+  talking?: string
+}
+
+export function CallMock({ name = 'Maya', idle = '/faces/maya-idle.jpg', talking = '/faces/maya-talking.mp4' }: Props) {
   const reduce = useReducedMotion()
+  const video = useRef<HTMLVideoElement>(null)
   const [turn, setTurn] = useState(0)
   const [phase, setPhase] = useState<Phase>(reduce ? 'speaking' : 'listening')
   const [shown, setShown] = useState(reduce ? SCRIPT[0].them.length : 0)
@@ -45,6 +54,14 @@ export function CallMock({ face = '/faces/maya.jpg', name = 'Maya' }: { face?: s
   }, [phase, shown, line.them.length, reduce])
 
   const speaking = phase === 'speaking'
+
+  // Lips move only while the caption is being "spoken".
+  useEffect(() => {
+    const v = video.current
+    if (!v || reduce) return
+    if (speaking) v.play().catch(() => {})
+    else v.pause()
+  }, [speaking, reduce])
   const caption = line.them.slice(0, shown)
   const clock = `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')}`
 
@@ -67,7 +84,22 @@ export function CallMock({ face = '/faces/maya.jpg', name = 'Maya' }: { face?: s
             speaking ? 'shadow-[0_0_0_2px_rgb(168_85_247/0.7),0_0_40px_-6px_rgb(168_85_247/0.8)]' : 'shadow-[0_0_0_1px_rgb(245_247_255/0.08)]'
           }`}
         >
-          <img src={face} alt={`${name}, a BwithU companion, on a video call`} className="absolute inset-0 h-full w-full object-cover animate-breathe" />
+          <div className="absolute inset-0 animate-breathe">
+            <img src={idle} alt={`${name}, a BwithU companion, on a video call`} className="absolute inset-0 h-full w-full object-cover" />
+            {!reduce && (
+              <video
+                ref={video}
+                src={talking}
+                poster={idle}
+                muted
+                loop
+                playsInline
+                preload="auto"
+                aria-hidden
+                className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ${speaking ? 'opacity-100' : 'opacity-0'}`}
+              />
+            )}
+          </div>
 
           <div className="absolute top-3 left-3 flex items-center gap-2 rounded-full bg-black/45 px-3 py-1.5 text-[12px] backdrop-blur">
             <span className={`h-2 w-2 rounded-full ${speaking ? 'bg-aurora shadow-[0_0_10px_var(--color-aurora)] animate-pulse' : 'bg-cyan shadow-[0_0_8px_var(--color-cyan)]'}`} />
