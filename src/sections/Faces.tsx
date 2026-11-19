@@ -9,12 +9,12 @@ export function Faces() {
     <section id="faces" className="relative py-20 sm:py-28">
       <div className="container-x">
         <SectionHeader eyebrow="The faces" title="Pick who you talk to.">
-          Seven companions to start with, each with their own voice and personality.
+          Six companions to start with, each with their own voice and personality.
         </SectionHeader>
 
-        <ul className="mt-16 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4">
+        <ul className="mt-16 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3">
           {FACES.map((f, i) => (
-            <Reveal as="li" key={f.id} delay={(i % 4) * 0.05}>
+            <Reveal as="li" key={f.id} delay={(i % 3) * 0.05}>
               <a
                 href={appLink({ face: f.id })}
                 className="group relative block aspect-[3/4] overflow-hidden rounded-[24px] bg-[#090e21] ring-1 ring-white/[0.08] transition duration-500 hover:-translate-y-1 hover:ring-aurora/50 hover:shadow-[0_24px_60px_-20px_rgb(168_85_247/0.55)]"

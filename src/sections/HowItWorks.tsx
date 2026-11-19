@@ -2,7 +2,7 @@ import { Reveal } from '../components/Reveal'
 import { SectionHeader } from '../components/SectionHeader'
 
 const steps = [
-  { n: '1', title: 'Pick a companion', body: 'Choose from seven companions, each with their own voice and personality. You can listen to each one first.' },
+  { n: '1', title: 'Pick a companion', body: 'Choose from six companions, each with their own voice and personality. You can listen to each one first.' },
   { n: '2', title: 'Pick your language', body: 'English, Hindi and Hinglish, or Spanish. On your first call they ask what to call you.' },
   { n: '3', title: 'Start talking', body: 'Allow the microphone and they pick up and say hi. Speak naturally. That’s it.' },
 ]

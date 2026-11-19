@@ -10,7 +10,6 @@ export const FACES: Face[] = [
   { id: 'zara', name: 'Zara', image: '/faces/zara.jpg' },
   { id: 'leo', name: 'Leo', image: '/faces/leo.jpg' },
   { id: 'ravi', name: 'Ravi', image: '/faces/ravi.jpg' },
-  { id: 'james', name: 'James', image: '/faces/james.jpg' },
 ]
 
 export type LanguageId = 'en' | 'hi' | 'es'

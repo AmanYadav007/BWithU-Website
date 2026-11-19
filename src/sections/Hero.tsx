@@ -37,7 +37,7 @@ export function Hero() {
             transition={{ duration: 0.9, delay: 0.16, ease }}
             className="mx-auto mt-6 max-w-[34rem] text-[18px] leading-relaxed text-ink-2 lg:mx-0"
           >
-            BwithU is an AI companion you can video-call. Pick a face, give them a name, and just talk. They listen,
+            BwithU is an AI companion you can video-call. Pick a companion, in English or Hinglish, and just talk. They listen,
             answer in a real voice, and look right at you while they do.
           </motion.p>
 
