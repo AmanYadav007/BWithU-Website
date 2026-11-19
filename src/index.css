@@ -1,4 +1,6 @@
 @import 'tailwindcss';
+/* Shared BwithU design tokens (generated: see ../../design-system/build.mjs). */
+@import './tokens.css';
 
 /* Brand tokens — straight from the BwithU brand guidelines. */
 @theme {
