@@ -27,7 +27,7 @@ export const faqs = [
   },
   {
     q: 'What languages can I speak?',
-    a: 'English works best today. Your companion understands many languages and tries to reply in the one you speak.',
+    a: 'English, Hindi and Hinglish, or Spanish. Pick your language before the call, and your companion talks with you in it, in a natural voice. In Hinglish they mix Hindi and English the way friends really do.',
   },
   {
     q: 'Can I make a companion from my own photo?',

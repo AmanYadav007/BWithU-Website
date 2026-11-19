@@ -9,7 +9,7 @@ export function Faces() {
     <section id="faces" className="relative py-20 sm:py-28">
       <div className="container-x">
         <SectionHeader eyebrow="The faces" title="Pick who you talk to.">
-          Eight companions to start with. Rename any of them, and give them the voice you like.
+          Seven companions to start with, each with their own voice and personality.
         </SectionHeader>
 
         <ul className="mt-16 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4">

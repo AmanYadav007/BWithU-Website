@@ -27,7 +27,7 @@ const features: { icon: LucideIcon; title: string; body: string }[] = [
   {
     icon: Palette,
     title: 'Make them yours',
-    body: 'Choose a face, a name, a voice and a vibe: warm, playful or focused.',
+    body: 'Pick the companion who fits you. Each has their own face, voice and personality, and remembers what you choose to save.',
   },
   {
     icon: MonitorSmartphone,
