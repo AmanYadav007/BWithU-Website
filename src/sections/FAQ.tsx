@@ -1,8 +1,8 @@
 import { AnimatePresence, motion } from 'framer-motion'
-import { Plus } from 'lucide-react'
+import { Mail, Plus } from 'lucide-react'
 import { useId, useState } from 'react'
 import { Reveal } from '../components/Reveal'
-import { SectionHeader } from '../components/SectionHeader'
+import { site } from '../lib/site'
 
 export const faqs = [
   {
@@ -41,15 +41,25 @@ export function FAQ() {
 
   return (
     <section id="faq" className="relative py-20 sm:py-28">
-      <div className="container-x max-w-[880px]">
-        <SectionHeader eyebrow="FAQ" title="Questions, answered." />
+      <div className="container-x grid gap-12 border-t border-line pt-20 sm:pt-28 lg:grid-cols-[440px_1fr] lg:gap-16">
+        <Reveal>
+          <span className="eyebrow">FAQ</span>
+          <h2 className="h2 mt-4">
+            Questions, <br className="hidden lg:block" />
+            answered.
+          </h2>
+          <p className="mt-8 text-[15px] text-ink-3">Still curious?</p>
+          <a href={`mailto:${site.email}`} className="mt-2 inline-flex items-center gap-2.5 text-[16px] font-semibold text-ink hover:text-cyan-soft">
+            <Mail size={20} className="text-cyan-soft" /> {site.email}
+          </a>
+        </Reveal>
 
-        <Reveal className="mt-14">
-          <ul className="glass divide-y divide-line overflow-hidden rounded-[28px]">
+        <Reveal>
+          <ul>
             {faqs.map((f, i) => {
               const isOpen = open === i
               return (
-                <li key={f.q}>
+                <li key={f.q} className="border-b border-white/10">
                   <h3>
                     <button
                       type="button"
@@ -57,10 +67,16 @@ export function FAQ() {
                       aria-expanded={isOpen}
                       aria-controls={`${base}-a${i}`}
                       onClick={() => setOpen(isOpen ? null : i)}
-                      className="flex w-full items-center justify-between gap-6 px-6 py-5 text-left font-display text-[17px] font-medium transition-colors hover:bg-white/[0.02] sm:px-8 sm:py-6 sm:text-[18px]"
+                      className="group flex w-full items-center justify-between gap-6 py-6 text-left text-[17px] font-semibold tracking-[-0.01em] sm:text-[19px]"
                     >
                       {f.q}
-                      <Plus size={20} className={`shrink-0 text-ink-3 transition-transform duration-300 ${isOpen ? 'rotate-45 text-cyan' : ''}`} />
+                      <span
+                        className={`grid h-9 w-9 shrink-0 place-items-center rounded-full border transition-colors duration-300 ${
+                          isOpen ? 'border-cyan/60 bg-cyan/12 text-cyan' : 'border-white/12 bg-white/5 text-ink-2 group-hover:text-ink'
+                        }`}
+                      >
+                        <Plus size={20} className={`transition-transform duration-300 ${isOpen ? 'rotate-45' : ''}`} />
+                      </span>
                     </button>
                   </h3>
                   <AnimatePresence initial={false}>
@@ -75,7 +91,7 @@ export function FAQ() {
                         transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
                         className="overflow-hidden"
                       >
-                        <p className="max-w-2xl px-6 pb-6 text-[15.5px] leading-relaxed text-ink-3 sm:px-8">{f.a}</p>
+                        <p className="max-w-[36rem] pb-7 text-[16px] leading-relaxed text-ink-2">{f.a}</p>
                       </motion.div>
                     )}
                   </AnimatePresence>

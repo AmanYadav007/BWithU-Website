@@ -66,63 +66,63 @@ export function CallMock({ name = 'Maya', idle = '/faces/maya-idle.jpg', talking
   const clock = `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')}`
 
   return (
-    <div className="relative mx-auto w-[min(100%,340px)]">
-      {/* Glow behind the phone */}
-      <div aria-hidden className="absolute -inset-10 rounded-full bg-aurora/25 blur-[80px]" />
-      <div aria-hidden className="absolute -inset-6 translate-x-10 translate-y-16 rounded-full bg-cyan/15 blur-[70px]" />
+    <div className="relative mx-auto w-full max-w-[480px] pb-10">
+      {/* Glow behind the frame */}
+      <div aria-hidden className="glow-aurora absolute -inset-24" />
 
-      <div className="relative rounded-[44px] border border-white/10 bg-space-2/80 p-3 shadow-[0_40px_120px_-30px_rgb(0_0_0/0.9)] backdrop-blur">
-        <div className="flex items-center justify-between px-3 pt-1 pb-3 text-[12px] text-ink-3">
-          <span className="font-display font-semibold text-ink">
-            <span className="text-aurora-soft">B</span>with<span className="text-cyan">U</span>
-          </span>
-          <span className="tabular-nums">{clock}</span>
+      <div
+        className={`relative aspect-[3/4] overflow-hidden rounded-[32px] bg-space-2 transition-shadow duration-[600ms] sm:rounded-[40px] ${
+          speaking
+            ? 'shadow-[0_0_0_2px_rgb(168_85_247/0.75),0_0_60px_-6px_rgb(168_85_247/0.6)]'
+            : 'shadow-[0_0_0_1px_rgb(245_247_255/0.1),0_40px_100px_-30px_rgb(0_0_0/0.9)]'
+        }`}
+      >
+        <div className="absolute inset-0 animate-breathe">
+          <img src={idle} alt={`${name}, a BwithU companion, on a video call`} className="absolute inset-0 h-full w-full object-cover" />
+          {!reduce && (
+            <video
+              ref={video}
+              src={talking}
+              poster={idle}
+              muted
+              loop
+              playsInline
+              preload="auto"
+              aria-hidden
+              className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ${speaking ? 'opacity-100' : 'opacity-0'}`}
+            />
+          )}
         </div>
+        <div aria-hidden className="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-space/60 to-transparent" />
+        <div aria-hidden className="absolute inset-x-0 bottom-0 h-[55%] bg-gradient-to-b from-transparent to-space/95" />
 
-        <div
-          className={`relative aspect-[3/4] overflow-hidden rounded-[30px] bg-[#090e21] transition-shadow duration-500 ${
-            speaking ? 'shadow-[0_0_0_2px_rgb(168_85_247/0.7),0_0_40px_-6px_rgb(168_85_247/0.8)]' : 'shadow-[0_0_0_1px_rgb(245_247_255/0.08)]'
-          }`}
-        >
-          <div className="absolute inset-0 animate-breathe">
-            <img src={idle} alt={`${name}, a BwithU companion, on a video call`} className="absolute inset-0 h-full w-full object-cover" />
-            {!reduce && (
-              <video
-                ref={video}
-                src={talking}
-                poster={idle}
-                muted
-                loop
-                playsInline
-                preload="auto"
-                aria-hidden
-                className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ${speaking ? 'opacity-100' : 'opacity-0'}`}
-              />
+        <div className="absolute top-4 left-4 flex items-center gap-2 rounded-full border border-white/10 bg-space/60 px-3.5 py-2 text-[13px] backdrop-blur sm:top-5 sm:left-5">
+          <span
+            className={`h-2 w-2 rounded-full ${speaking ? 'bg-aurora shadow-[0_0_10px_var(--color-aurora)]' : 'bg-cyan shadow-[0_0_8px_var(--color-cyan)]'}`}
+          />
+          <strong className="font-semibold">{name}</strong>
+          <span className="text-ink-2">· {speaking ? 'Speaking' : 'Listening'}</span>
+        </div>
+        <span className="absolute top-6 right-5 text-[13px] font-medium text-ink-2 tabular-nums sm:top-7 sm:right-6">{clock}</span>
+
+        <div className="absolute inset-x-4 bottom-14 flex flex-col items-end gap-2.5 sm:inset-x-6 sm:bottom-16">
+          <VoiceBars active={speaking} className="mx-auto mb-1" />
+          <AnimatePresence mode="popLayout">
+            {phase !== 'listening' && (
+              <motion.p
+                key={`you-${turn}`}
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                className="flex max-w-[85%] items-baseline gap-2.5 rounded-2xl bg-white/16 px-3.5 py-2.5 text-[13.5px] font-medium leading-snug backdrop-blur-sm sm:text-[14.5px]"
+              >
+                <span className="text-[10.5px] font-bold tracking-[0.12em] text-ink-2 uppercase">You</span>
+                {line.you}
+              </motion.p>
             )}
-          </div>
-
-          <div className="absolute top-3 left-3 flex items-center gap-2 rounded-full bg-black/45 px-3 py-1.5 text-[12px] backdrop-blur">
-            <span className={`h-2 w-2 rounded-full ${speaking ? 'bg-aurora shadow-[0_0_10px_var(--color-aurora)] animate-pulse' : 'bg-cyan shadow-[0_0_8px_var(--color-cyan)]'}`} />
-            <strong className="font-semibold">{name}</strong>
-            <span className="text-ink-3">{speaking ? 'Speaking' : 'Listening'}</span>
-          </div>
-
-          <div className="absolute inset-x-3 bottom-3 flex flex-col items-end gap-2">
-            <AnimatePresence mode="popLayout">
-              {phase !== 'listening' && (
-                <motion.p
-                  key={`you-${turn}`}
-                  initial={{ opacity: 0, y: 6 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.3 }}
-                  className="max-w-[85%] rounded-[16px] rounded-br-[6px] bg-white/15 px-3 py-2 text-[12.5px] leading-snug text-ink/90 backdrop-blur"
-                >
-                  <span className="block text-[10px] font-semibold tracking-wider text-ink-3 uppercase">You</span>
-                  {line.you}
-                </motion.p>
-              )}
-            </AnimatePresence>
+          </AnimatePresence>
+          <div className="min-h-[64px] w-full">
             <AnimatePresence>
               {caption && (
                 <motion.p
@@ -130,7 +130,7 @@ export function CallMock({ name = 'Maya', idle = '/faces/maya-idle.jpg', talking
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="w-full rounded-[16px] bg-[rgb(6_8_22/0.75)] px-3.5 py-2.5 text-center text-[13px] leading-snug"
+                  className="w-full rounded-2xl bg-space/72 px-4 py-3 text-[14.5px] leading-snug sm:text-[15.5px]"
                 >
                   {caption}
                 </motion.p>
@@ -138,13 +138,33 @@ export function CallMock({ name = 'Maya', idle = '/faces/maya-idle.jpg', talking
             </AnimatePresence>
           </div>
         </div>
+      </div>
 
-        <div aria-hidden className="flex items-center justify-center gap-5 pt-4 pb-2">
-          <span className="grid h-11 w-11 place-items-center rounded-full border border-white/10 bg-white/5 text-ink-2"><Mic size={18} /></span>
-          <span className="grid h-12 w-12 place-items-center rounded-full bg-[#f43f5e] text-white shadow-[0_8px_24px_-8px_#f43f5e]"><PhoneOff size={20} /></span>
-          <span className="grid h-11 w-11 place-items-center rounded-full border border-white/10 bg-white/5 text-ink-2"><Volume2 size={18} /></span>
-        </div>
+      {/* Call controls overlap the bottom edge of the frame, as in the app. */}
+      <div
+        aria-hidden
+        className="absolute bottom-3 left-1/2 flex -translate-x-1/2 items-center gap-2 rounded-full border border-white/10 bg-space-2/95 p-1.5 shadow-[0_20px_40px_-10px_rgb(0_0_0/0.6)] sm:gap-3"
+      >
+        <span className="grid h-12 w-12 place-items-center rounded-full bg-white/8 text-ink sm:h-[58px] sm:w-[58px]"><Mic size={22} /></span>
+        <span className="grid h-12 w-12 place-items-center rounded-full bg-white/8 text-ink sm:h-[58px] sm:w-[58px]"><Volume2 size={22} /></span>
+        <span className="grid h-12 w-12 place-items-center rounded-full bg-danger text-white sm:h-[58px] sm:w-[58px]"><PhoneOff size={22} /></span>
       </div>
     </div>
+  )
+}
+
+/** Seven bars that move while the companion speaks. */
+export function VoiceBars({ active, className = '' }: { active: boolean; className?: string }) {
+  const heights = [10, 18, 26, 14, 22, 12, 8]
+  return (
+    <span aria-hidden className={`flex h-7 items-center gap-[5px] ${className}`}>
+      {heights.map((h, i) => (
+        <span
+          key={i}
+          className={`w-1 origin-center rounded-full transition-opacity duration-300 ${i % 2 ? 'bg-cyan' : 'bg-aurora-soft'} ${active ? 'opacity-100' : 'opacity-0'}`}
+          style={{ height: h, animation: active ? `vbar ${0.7 + (i % 3) * 0.15}s ${i * 0.08}s ease-in-out infinite` : undefined }}
+        />
+      ))}
+    </span>
   )
 }

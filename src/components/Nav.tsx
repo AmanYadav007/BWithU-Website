@@ -5,9 +5,9 @@ import { appLink } from '../lib/site'
 import { Logo } from './Logo'
 
 const links = [
-  { href: '/#features', label: 'What it’s like' },
-  { href: '/#faces', label: 'Faces' },
-  { href: '/#voices', label: 'Voices' },
+  { href: '/#faces', label: 'Companions' },
+  { href: '/#features', label: 'Features' },
+  { href: '/#how', label: 'How it works' },
   { href: '/#privacy', label: 'Privacy' },
   { href: '/#faq', label: 'FAQ' },
 ]
@@ -17,7 +17,7 @@ export function Nav() {
   const [open, setOpen] = useState(false)
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12)
+    const onScroll = () => setScrolled(window.scrollY > 24)
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
@@ -28,49 +28,39 @@ export function Nav() {
   }, [open])
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-4">
-      <div
-        className={`container-x !px-0 transition-all duration-500 ${scrolled ? 'max-w-[1080px]' : 'max-w-[1200px]'}`}
-      >
-        <nav
-          aria-label="Main"
-          className={`flex h-14 items-center justify-between rounded-full pr-2 pl-3 transition-all duration-500 sm:pl-4 ${
-            scrolled ? 'glass' : 'border border-transparent'
-          }`}
-        >
-          <a href="/" aria-label="BwithU home">
-            <Logo />
-          </a>
+    <header
+      className={`fixed inset-x-0 top-0 z-50 border-b transition-colors duration-200 ${
+        scrolled || open ? 'border-line bg-space-2/85 backdrop-blur-xl' : 'border-transparent'
+      }`}
+    >
+      <nav aria-label="Main" className="container-x flex h-16 items-center justify-between lg:h-[84px]">
+        <a href="/" aria-label="BwithU home">
+          <Logo size={34} />
+        </a>
 
-          <div className="hidden items-center gap-1 md:flex">
-            {links.map((l) => (
-              <a
-                key={l.href}
-                href={l.href}
-                className="rounded-full px-4 py-2 text-[14px] text-ink-2 transition-colors hover:bg-white/5 hover:text-ink"
-              >
-                {l.label}
-              </a>
-            ))}
-          </div>
-
-          <div className="flex items-center gap-2">
-            <a href={appLink()} className="btn btn-primary h-10 px-4 text-[14px]">
-              <span className="hidden sm:inline">Start a free call</span>
-              <span className="sm:hidden">Start a call</span>
+        <div className="hidden items-center gap-10 lg:flex">
+          {links.map((l) => (
+            <a key={l.href} href={l.href} className="text-[15px] font-medium text-ink-2 transition-colors hover:text-ink">
+              {l.label}
             </a>
-            <button
-              type="button"
-              className="grid h-10 w-10 place-items-center rounded-full text-ink-2 hover:bg-white/5 md:hidden"
-              aria-label={open ? 'Close menu' : 'Open menu'}
-              aria-expanded={open}
-              onClick={() => setOpen((v) => !v)}
-            >
-              {open ? <X size={20} /> : <Menu size={20} />}
-            </button>
-          </div>
-        </nav>
-      </div>
+          ))}
+        </div>
+
+        <div className="flex items-center gap-2">
+          <a href={appLink()} className="btn btn-primary hidden h-11 px-6 text-[15px] sm:inline-flex">
+            Start a free call
+          </a>
+          <button
+            type="button"
+            className="grid h-11 w-11 place-items-center rounded-full border border-white/12 bg-white/5 text-ink lg:hidden"
+            aria-label={open ? 'Close menu' : 'Open menu'}
+            aria-expanded={open}
+            onClick={() => setOpen((v) => !v)}
+          >
+            {open ? <X size={22} /> : <Menu size={22} />}
+          </button>
+        </div>
+      </nav>
 
       <AnimatePresence>
         {open && (
@@ -78,19 +68,25 @@ export function Nav() {
             initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.25 }}
-            className="glass mx-1 mt-2 rounded-3xl p-2 md:hidden"
+            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+            className="flex h-[calc(100dvh-64px)] flex-col border-t border-line bg-space px-5 pt-4 pb-8 lg:hidden"
           >
-            {links.map((l) => (
-              <a
+            {links.map((l, i) => (
+              <motion.a
                 key={l.href}
                 href={l.href}
                 onClick={() => setOpen(false)}
-                className="block rounded-2xl px-4 py-3.5 font-display text-[17px] text-ink-2 hover:bg-white/5 hover:text-ink"
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.04 * i }}
+                className="border-b border-line py-5 text-[24px] font-semibold tracking-[-0.02em] text-ink"
               >
                 {l.label}
-              </a>
+              </motion.a>
             ))}
+            <a href={appLink()} className="btn btn-primary mt-auto h-14 text-[16px]">
+              Start a free call
+            </a>
           </motion.div>
         )}
       </AnimatePresence>

@@ -1,7 +1,6 @@
 import { Bot, HeartHandshake, MicOff, ShieldCheck } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { Reveal } from '../components/Reveal'
-import { SectionHeader } from '../components/SectionHeader'
 import { site } from '../lib/site'
 
 const points: { icon: LucideIcon; title: string; body: string }[] = [
@@ -30,31 +29,45 @@ const points: { icon: LucideIcon; title: string; body: string }[] = [
 export function Privacy() {
   return (
     <section id="privacy" className="relative py-20 sm:py-28">
-      <div className="container-x">
-        <SectionHeader eyebrow="Privacy & safety" title="Built to be trusted.">
-          Talking to someone should feel safe. Here’s what that means for us.
-        </SectionHeader>
+      <div className="container-x grid gap-12 lg:grid-cols-[440px_1fr] lg:gap-16">
+        <Reveal>
+          <span className="eyebrow">Privacy & safety</span>
+          <h2 className="h2 mt-4">
+            Built to be <br className="hidden lg:block" />
+            trusted.
+          </h2>
+          <p className="mt-6 max-w-[24rem] text-[17px] leading-relaxed text-ink-2 sm:text-[18px]">
+            Talking to someone should feel safe. Here’s what that means for us.
+          </p>
+          <p className="mt-8 text-[15px] font-semibold text-cyan-soft">
+            Read the{' '}
+            <a href={site.privacy} className="underline decoration-cyan-soft/30 underline-offset-4 hover:decoration-cyan-soft">privacy policy</a>
+            {' '}and{' '}
+            <a href={site.terms} className="underline decoration-cyan-soft/30 underline-offset-4 hover:decoration-cyan-soft">terms</a>
+          </p>
+          <div aria-hidden className="relative mt-12 hidden h-[180px] w-[180px] place-items-center lg:grid">
+            <span className="glow-aurora absolute inset-0" />
+            <span className="absolute h-[150px] w-[150px] rounded-full border border-white/10" />
+            <span className="absolute h-[110px] w-[110px] rounded-full border border-white/10" />
+            <span className="absolute h-[70px] w-[70px] rounded-full border border-aurora-soft/80" />
+            <ShieldCheck size={32} className="relative" />
+          </div>
+        </Reveal>
 
-        <ul className="mt-16 grid gap-4 sm:grid-cols-2">
+        <ul className="grid sm:grid-cols-2">
           {points.map((p, i) => (
-            <Reveal as="li" key={p.title} delay={(i % 2) * 0.06} className="glass flex gap-5 rounded-[28px] p-7">
-              <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-white/[0.05] text-cyan ring-1 ring-white/10">
-                <p.icon size={20} />
-              </span>
-              <span>
-                <h3 className="text-[18px] font-semibold">{p.title}</h3>
-                <p className="mt-1.5 text-[15.5px] leading-relaxed text-ink-3">{p.body}</p>
-              </span>
+            <Reveal
+              as="li"
+              key={p.title}
+              delay={(i % 2) * 0.06}
+              className={`border-line py-8 sm:px-10 sm:py-10 ${i > 0 ? 'border-t' : ''} ${i === 1 ? 'sm:border-t-0' : ''} ${i % 2 ? 'sm:border-l sm:pr-0' : 'sm:pl-0'}`}
+            >
+              <p.icon size={28} strokeWidth={1.75} className={i === 0 || i === 3 ? 'text-cyan' : 'text-aurora-soft'} />
+              <h3 className="mt-5 text-[20px] font-semibold tracking-[-0.01em] sm:text-[21px]">{p.title}</h3>
+              <p className="mt-2.5 text-[15.5px] leading-relaxed text-ink-3">{p.body}</p>
             </Reveal>
           ))}
         </ul>
-
-        <Reveal className="mt-8 text-center text-[15px] text-ink-3">
-          Read the full{' '}
-          <a href={site.privacy} className="text-ink-2 underline decoration-white/20 underline-offset-4 hover:text-ink">privacy policy</a>
-          {' '}and{' '}
-          <a href={site.terms} className="text-ink-2 underline decoration-white/20 underline-offset-4 hover:text-ink">terms</a>.
-        </Reveal>
       </div>
     </section>
   )
