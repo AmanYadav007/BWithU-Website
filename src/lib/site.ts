@@ -10,7 +10,7 @@ export const site = {
   email: 'hello@bwithu.live',
   x: 'https://x.com/BwithUAI',
   /** Free talk time per person per day and per call (matches the app's limits). */
-  freeMinutes: 10,
+  freeMinutes: 7,
   /**
    * Google Apps Script web-app URL that appends signups to the waitlist sheet (google-sheets/waitlist.gs).
    * Public by design (it ships in the page). VITE_SHEETS_URL overrides it, e.g. for a test sheet.

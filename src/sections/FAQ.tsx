@@ -7,7 +7,7 @@ import { site } from '../lib/site'
 export const faqs = [
   {
     q: 'Is BwithU free?',
-    a: 'Yes. Everyone gets 10 free minutes a day, and a single call can run up to 10 minutes. No card, no trial.',
+    a: 'Yes. Everyone gets 7 free minutes a day, and a single call can run up to 7 minutes. No card, no trial.',
   },
   {
     q: 'Do I need to download an app or make an account?',
