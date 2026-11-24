@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "node scripts/check-social.mjs && tsc -b && vite build",
+    "build": "tsc -b && vite build",
     "preview": "vite preview --port 4173",
     "test": "node --test src/lib/warmup.test.ts",
     "typecheck": "tsc -b --noEmit",
