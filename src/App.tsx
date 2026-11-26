@@ -14,7 +14,7 @@ export default function App() {
   return (
     <>
       <Background />
-      <Nav />
+      <Nav faceId={faceId} />
       <main>
         <Hero onFace={setFaceId} />
         <Strip />

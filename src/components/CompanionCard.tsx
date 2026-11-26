@@ -9,13 +9,21 @@ import ShinyText from './reactbits/ShinyText'
 
 export type DemoState = 'idle' | 'starting' | 'live' | 'ended'
 
-type Props = { face: Face; active: boolean; state: DemoState; onTry: () => void; onEvent: (e: DemoEvent) => void }
+type Props = {
+  face: Face
+  active: boolean
+  state: DemoState
+  onTry: () => void
+  onEvent: (e: DemoEvent) => void
+  /** Only the call frame, no Try button under it: used on top of the gallery's centre card (the hero draws the button). */
+  overlay?: boolean
+}
 
 /**
  * One companion in the hero slider. Idle, it is a preview of the real call screen (status, 0:30 timer, live caption,
  * mic and hang up). After "Try 30 seconds" the same frame becomes the real call: the app runs in an iframe.
  */
-export function CompanionCard({ face, active, state, onTry, onEvent }: Props) {
+export function CompanionCard({ face, active, state, onTry, onEvent, overlay = false }: Props) {
   const running = state === 'starting' || state === 'live'
   useEffect(() => {
     if (!running) return
@@ -28,11 +36,11 @@ export function CompanionCard({ face, active, state, onTry, onEvent }: Props) {
   }, [running, onEvent])
 
   return (
-    <div className="flex w-full flex-col items-center">
+    <div className={`flex w-full flex-col items-center ${overlay ? 'h-full' : ''}`}>
       <SpotlightCard
         spotlightColor="rgb(168 85 247)"
         intensity={0.22}
-        className={`relative aspect-[3/4] w-full overflow-hidden !rounded-[32px] !p-0 transition-shadow duration-[600ms] sm:!rounded-[36px] ${
+        className={`relative ${overlay ? 'h-full' : 'aspect-[3/4]'} w-full overflow-hidden !rounded-[32px] !p-0 transition-shadow duration-[600ms] sm:!rounded-[36px] ${
           running ? 'shadow-[0_0_0_2px_rgb(168_85_247/0.75),0_0_70px_-6px_rgb(168_85_247/0.6)]' : 'shadow-[0_0_0_1px_rgb(245_247_255/0.1),0_40px_100px_-30px_rgb(0_0_0/0.9)]'
         }`}
       >
@@ -90,6 +98,7 @@ export function CompanionCard({ face, active, state, onTry, onEvent }: Props) {
         )}
       </SpotlightCard>
 
+      {!overlay && (
       <div className="mt-6 h-[56px]">
         {active && state === 'idle' && (
           <button type="button" onClick={onTry} className="btn btn-primary h-14 px-9 text-[17px] font-semibold">
@@ -98,6 +107,7 @@ export function CompanionCard({ face, active, state, onTry, onEvent }: Props) {
         )}
         {active && state === 'starting' && <p className="pt-3.5 text-[15px] text-ink-2">Calling {face.name}…</p>}
       </div>
+      )}
     </div>
   )
 }

@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { FACES } from '../lib/companions'
 import { appLink, site } from '../lib/site'
 import { Logo } from './Logo'
 
@@ -10,7 +11,8 @@ const links = [
   { href: site.feedback, label: 'Feedback' },
 ]
 
-export function Nav() {
+export function Nav({ faceId }: { faceId: string }) {
+  const face = FACES.find((f) => f.id === faceId) ?? FACES[0]
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
 
@@ -45,8 +47,8 @@ export function Nav() {
         </div>
 
         <div className="flex items-center gap-2">
-          <a href={appLink({ face: 'aiko' })} className="btn btn-primary hidden h-11 px-6 text-[15px] sm:inline-flex">
-            Call Aiko
+          <a href={appLink({ face: face.id })} className="btn btn-primary hidden h-11 px-6 text-[15px] sm:inline-flex">
+            Call {face.name}
           </a>
           <button
             type="button"
@@ -82,8 +84,8 @@ export function Nav() {
                 {l.label}
               </motion.a>
             ))}
-            <a href={appLink({ face: 'aiko' })} className="btn btn-primary mt-auto h-14 text-[16px]">
-              Call Aiko
+            <a href={appLink({ face: face.id })} className="btn btn-primary mt-auto h-14 text-[16px]">
+              Call {face.name}
             </a>
           </motion.div>
         )}
