@@ -6,7 +6,7 @@ export const site = {
   /** The call app. Faces and voices can be preselected with ?face= and ?voice=. */
   app: 'https://app.bwithu.live/',
   /** Built on the app's dev branch (Nov 2026); live once the app is deployed. */
-  feedback: 'https://app.bwithu.live/feedback',
+  feedback: 'https://app.bwithu.live/#/feedback',
   privacy: 'https://app.bwithu.live/ui/privacy.html',
   terms: 'https://app.bwithu.live/ui/terms.html',
   email: 'hello@bwithu.live',
