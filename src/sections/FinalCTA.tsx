@@ -1,4 +1,5 @@
 import { ArrowRight } from 'lucide-react'
+import BlurText from '../components/reactbits/BlurText'
 import { Reveal } from '../components/Reveal'
 import { FACES } from '../lib/companions'
 import { appLink, site } from '../lib/site'
@@ -18,9 +19,7 @@ export function FinalCTA({ faceId }: { faceId: string }) {
         </div>
 
         <h2 className="mx-auto mt-10 text-[clamp(2.3rem,6.4vw,4.75rem)] leading-[1.02] font-semibold tracking-[-0.045em]">
-          Someone’s waiting
-          <br />
-          to say hi.
+          <BlurText text="Someone’s waiting to say hi." animateBy="words" delay={80} className="justify-center" />
         </h2>
         <a href={appLink({ face: face.id })} className="btn btn-primary mt-10 h-[60px] w-full max-w-[350px] px-9 text-[17px] font-semibold sm:w-auto">
           Call {face.name} <ArrowRight size={19} />

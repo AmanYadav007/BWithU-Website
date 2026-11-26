@@ -191,3 +191,7 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Hide the scrollbar on the companion slider; it still scrolls and snaps. */
+.no-scrollbar { scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }

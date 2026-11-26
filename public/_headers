@@ -1,0 +1,6 @@
+# The 30-second test call on the homepage is the call app in an iframe. Its 3D face needs a cross-origin isolated page
+# (the app sets the same headers and allows framing only from bwithu.live). Everything on this site is same-origin or
+# CORS/CORP-friendly (Google Fonts, the waitlist form), so isolation costs nothing.
+/*
+  Cross-Origin-Opener-Policy: same-origin
+  Cross-Origin-Embedder-Policy: require-corp
