@@ -40,3 +40,11 @@ export const LANGUAGE_HINT: Record<LanguageId, string> = {
   hi: 'Hindi, with English words mixed in',
   es: 'Talk in Spanish',
 }
+
+/** What each voice sample says (same text as make_voice_samples.py), shown as the caption while it plays. */
+export const GREETING: Record<string, Record<'en' | 'hi', string>> = {
+  aiko: { en: 'Hi, I’m Aiko. What’s one thing you want to get done today? Let’s figure it out.', hi: 'हाय, मैं Aiko हूँ। आज कौन सा एक काम पूरा करना है? चलो, साथ में plan करते हैं।' },
+  maya: { en: 'Hi, I’m Maya. I’m all ears, so tell me, how was your day?', hi: 'हाय, मैं Maya हूँ। आज का दिन कैसा रहा? आराम से बताओ, मैं सुन रही हूँ।' },
+  elena: { en: 'Hey, I’m Elena. What’s been on your mind lately? I’m curious.', hi: 'हाय, मैं Elena हूँ। आजकल दिमाग में क्या चल रहा है? मुझे सच में जानना है।' },
+  zara: { en: 'Hey you! I’m Zara. Okay, give me the best and worst part of your day. Go!', hi: 'अरे hello! मैं Zara हूँ। चलो, आज का best और worst moment बताओ, जल्दी!' },
+}

@@ -1,15 +1,13 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { appLink } from '../lib/site'
+import { appLink, site } from '../lib/site'
 import { Logo } from './Logo'
 
 const links = [
   { href: '/#faces', label: 'Companions' },
-  { href: '/#features', label: 'Features' },
-  { href: '/#how', label: 'How it works' },
   { href: '/#privacy', label: 'Privacy' },
-  { href: '/#faq', label: 'FAQ' },
+  { href: site.feedback, label: 'Feedback' },
 ]
 
 export function Nav() {
@@ -47,8 +45,8 @@ export function Nav() {
         </div>
 
         <div className="flex items-center gap-2">
-          <a href={appLink()} className="btn btn-primary hidden h-11 px-6 text-[15px] sm:inline-flex">
-            Start a free call
+          <a href={appLink({ face: 'aiko' })} className="btn btn-primary hidden h-11 px-6 text-[15px] sm:inline-flex">
+            Call Aiko
           </a>
           <button
             type="button"
@@ -84,8 +82,8 @@ export function Nav() {
                 {l.label}
               </motion.a>
             ))}
-            <a href={appLink()} className="btn btn-primary mt-auto h-14 text-[16px]">
-              Start a free call
+            <a href={appLink({ face: 'aiko' })} className="btn btn-primary mt-auto h-14 text-[16px]">
+              Call Aiko
             </a>
           </motion.div>
         )}

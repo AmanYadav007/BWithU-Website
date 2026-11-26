@@ -3,7 +3,8 @@ import { Reveal } from '../components/Reveal'
 import { FACES } from '../lib/companions'
 import { appLink, site } from '../lib/site'
 
-export function FinalCTA() {
+export function FinalCTA({ faceId }: { faceId: string }) {
+  const face = FACES.find((f) => f.id === faceId) ?? FACES[0]
   return (
     <section className="relative overflow-hidden py-24 sm:py-32">
       <div aria-hidden className="glow-aurora pointer-events-none absolute top-0 left-1/2 h-full w-[1000px] -translate-x-1/2 animate-drift" />
@@ -21,9 +22,8 @@ export function FinalCTA() {
           <br />
           to say hi.
         </h2>
-        <p className="mx-auto mt-6 max-w-md text-[16px] leading-relaxed text-ink-2 sm:text-[19px]">It takes a minute. Bring headphones if you have them.</p>
-        <a href={appLink()} className="btn btn-primary mt-9 h-[60px] w-full max-w-[350px] px-9 text-[17px] font-semibold sm:w-auto">
-          Start a free call <ArrowRight size={19} />
+        <a href={appLink({ face: face.id })} className="btn btn-primary mt-10 h-[60px] w-full max-w-[350px] px-9 text-[17px] font-semibold sm:w-auto">
+          Call {face.name} <ArrowRight size={19} />
         </a>
         <p className="mt-5 text-[14px] text-ink-3">{site.freeMinutes} free minutes a day · No sign-up</p>
       </Reveal>
