@@ -5,10 +5,14 @@ import BlurText from '../components/reactbits/BlurText'
 import { FACES } from '../lib/companions'
 import { demoOrigin, demoUrl, parseDemoMessage, type DemoEvent } from '../lib/demo'
 import { callLink, site } from '../lib/site'
+import { RisingLines } from '../components/RisingLines/RisingLines'
 import { useDesktopMotion } from '../lib/useDesktopMotion'
 
 // The WebGL aurora is only fetched on a big screen with motion allowed (see useDesktopMotion).
 const Aurora = lazy(() => import('../components/reactbits/Aurora'))
+
+/** Hero background. Switch to 'aurora' to go back to the old one. */
+const HERO_BG: 'rising-lines' | 'aurora' = 'rising-lines'
 
 type State = 'idle' | 'starting' | 'live' | 'ended'
 const ROTATE_MS = 5000
@@ -53,7 +57,13 @@ export function Hero({ onFace }: { onFace: (id: string) => void }) {
 
   return (
     <section id="faces" className="relative overflow-x-clip pt-[84px] pb-12 sm:pt-28 lg:flex lg:min-h-[100svh] lg:items-center lg:pt-24 lg:pb-16">
-      {desktopMotion && (
+      {HERO_BG === 'rising-lines' && (
+        <>
+          <RisingLines />
+          <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-r from-space/70 via-space/20 to-transparent lg:from-space/80" />
+        </>
+      )}
+      {HERO_BG === 'aurora' && desktopMotion && (
         <Suspense fallback={null}>
           <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-[640px] [mask-image:linear-gradient(to_bottom,black,transparent)]">
             <Aurora colorStops={['#7c3aed', '#38bdf8', '#9b4dff']} amplitude={0.9} blend={0.6} speed={0.5} opacity={0.45} dpr={1} />
