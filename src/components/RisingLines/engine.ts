@@ -1,6 +1,7 @@
 /** Rising Lines engine: pure TS, fixed pools, no allocation per frame. Own implementation, Brand 2.0 colours. */
 
-export type EngineOptions = { density: number; mobile: boolean }
+export type EngineOptions = { density: number; mobile: boolean; calm?: boolean }
+export type Rect = { x: number; y: number; w: number; h: number }
 
 type Line = { on: boolean; x: number; y: number; len: number; speed: number; w: number; a: number; depth: number; boost: number }
 type Spark = { x: number; y: number; vx: number; vy: number; r: number; a: number; ph: number }
@@ -22,17 +23,27 @@ export class RisingLinesEngine {
   private hover = false
   private spawnAcc = 0
   private time = 0
+  private avoid: Rect | null = null
 
   constructor(private opts: EngineOptions) {}
+
+  /** Calm mode: keep lines out of this rect (the call card), with a soft edge. */
+  setAvoid(r: Rect | null) {
+    this.avoid = r
+  }
+
+  private get calm() {
+    return !!this.opts.calm
+  }
 
   resize(w: number, h: number) {
     this.w = w
     this.h = h
     this.horizon = h * 0.955
-    const n = Math.round((this.opts.density * w) / 6 / (this.opts.mobile ? 2 : 1))
+    const n = Math.round((this.opts.density * w) / 6 / (this.opts.mobile ? 2 : 1) * (this.calm ? 0.38 : 1))
     while (this.lines.length < n) this.lines.push({ on: false, x: 0, y: 0, len: 0, speed: 0, w: 1, a: 0, depth: 1, boost: 0 })
     this.lines.length = Math.max(n, 1)
-    const s = this.opts.mobile ? 16 : 36
+    const s = Math.round((this.opts.mobile ? 16 : 36) / (this.calm ? 3 : 1))
     while (this.sparks.length < s) this.sparks.push({ x: rand(0, w), y: rand(0, h), vx: 0, vy: 0, r: 1, a: 0, ph: rand(0, 6) })
     this.sparks.length = s
     this.sparks.forEach((p) => this.resetSpark(p, true))
@@ -54,7 +65,7 @@ export class RisingLinesEngine {
 
   /** A volley of 20 to 40 lines at x. */
   volley(x: number) {
-    const n = Math.round(rand(20, 40))
+    const n = Math.round(this.calm ? rand(8, 14) : rand(20, 40))
     for (let i = 0; i < n; i++) {
       const l = this.lines.find((q) => !q.on) ?? this.lines[Math.floor(Math.random() * this.lines.length)]
       this.spawn(l, x + rand(-50, 50), rand(0.6, 1))
@@ -73,8 +84,8 @@ export class RisingLinesEngine {
     l.depth = depth // 0 far, 1 near
     l.x = x
     l.y = this.horizon - (1 - depth) * this.h * 0.04
-    l.len = rand(0.12, 0.34) * this.h * (0.5 + depth * 0.7)
-    l.speed = (60 + depth * 160) * rand(0.8, 1.25)
+    l.len = rand(0.12, 0.34) * this.h * (0.5 + depth * 0.7) * (this.calm ? 0.55 : 1)
+    l.speed = (60 + depth * 160) * rand(0.8, 1.25) * (this.calm ? 0.6 : 1)
     l.w = 0.6 + depth * 1.4
     l.a = 0.25 + depth * 0.55
     l.boost = 0
@@ -111,11 +122,11 @@ export class RisingLinesEngine {
       let k = 1
       if (this.hover) {
         const d = Math.abs(l.x - this.px)
-        if (d < R) k += 2.2 * (1 - d / R) ** 2
+        if (d < R) k += (this.calm ? 1 : 2.2) * (1 - d / R) ** 2
       }
       l.boost += ((k > 1 ? k - 1 : 0) - l.boost) * Math.min(1, dt * 6)
       l.y -= l.speed * (1 + l.boost * 2.2) * dt
-      if (l.y + l.len < -10) l.on = false
+      if (l.y + l.len < -10 || (this.calm && l.y < this.horizon - this.h * 0.36)) l.on = false
     }
     for (const p of this.sparks) {
       p.x += p.vx * dt
@@ -136,7 +147,7 @@ export class RisingLinesEngine {
     ctx.translate(w / 2, hy)
     ctx.scale(1, 0.38)
     const haze = ctx.createRadialGradient(0, 0, 0, 0, 0, w * 0.55)
-    haze.addColorStop(0, `rgba(124,58,237,${0.32 * open})`)
+    haze.addColorStop(0, `rgba(124,58,237,${(this.calm ? 0.45 : 0.32) * open})`)
     haze.addColorStop(1, 'rgba(124,58,237,0)')
     ctx.fillStyle = haze
     ctx.fillRect(-w, -w, w * 2, w * 2)
@@ -146,7 +157,15 @@ export class RisingLinesEngine {
     for (const l of this.lines) {
       if (!l.on) continue
       const fade = clamp(l.y / (h * 0.7)) * clamp((hy - l.y) / 30) // dim near the top, ease in from the horizon
-      const a = clamp(l.a * fade * (1 + l.boost * 0.9), 0, 1)
+      let a = clamp(l.a * fade * (1 + l.boost * 0.9), 0, 1)
+      if (this.calm) {
+        a *= clamp(1 - (hy - l.y) / (h * 0.3)) // gone well before the headline
+        const v = this.avoid
+        if (v && l.y > v.y - 40 && l.y < v.y + v.h + 40) {
+          const dx = Math.max(v.x - l.x, l.x - (v.x + v.w), 0)
+          a *= clamp(dx / 60) // zero inside the card, soft edge outside
+        }
+      }
       if (a < 0.01) continue
       const g = ctx.createLinearGradient(0, l.y, 0, l.y + l.len)
       g.addColorStop(0, `rgba(255,255,255,${a})`)
@@ -180,13 +199,14 @@ export class RisingLinesEngine {
       hg.addColorStop(0.5, 'rgba(185,138,255,0.9)')
       hg.addColorStop(1, 'rgba(185,138,255,0)')
       ctx.fillStyle = hg
-      ctx.fillRect(w / 2 - half, hy, half * 2, 1.5)
-      const band = ctx.createLinearGradient(0, hy - 10, 0, hy + 10)
+      ctx.fillRect(w / 2 - half, hy, half * 2, this.calm ? 2 : 1.5)
+      const bh = this.calm ? 28 : 10
+      const band = ctx.createLinearGradient(0, hy - bh, 0, hy + bh)
       band.addColorStop(0, 'rgba(155,77,255,0)')
-      band.addColorStop(0.5, 'rgba(155,77,255,0.18)')
+      band.addColorStop(0.5, `rgba(155,77,255,${this.calm ? 0.32 : 0.18})`)
       band.addColorStop(1, 'rgba(155,77,255,0)')
       ctx.fillStyle = band
-      ctx.fillRect(w / 2 - half, hy - 10, half * 2, 20)
+      ctx.fillRect(w / 2 - half, hy - bh, half * 2, bh * 2)
     }
     ctx.globalCompositeOperation = 'source-over'
   }

@@ -2,14 +2,14 @@ import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react'
 import { RisingLinesEngine } from './engine'
 
 export type RisingLinesHandle = { launch: () => void; replay: () => void }
-type Props = { density?: number; className?: string }
+type Props = { density?: number; className?: string; calm?: boolean; avoidSelector?: string }
 
 /**
  * Canvas background. aria-hidden, one rAF loop, paused off-screen and in hidden tabs, one static frame with reduced
  * motion. Pointer and click are read from the window (so the canvas can sit behind the content); taps on links,
  * buttons and the call frame are ignored.
  */
-export const RisingLines = forwardRef<RisingLinesHandle, Props>(function RisingLines({ density = 1, className = '' }, ref) {
+export const RisingLines = forwardRef<RisingLinesHandle, Props>(function RisingLines({ density = 1, className = '', calm = false, avoidSelector }, ref) {
   const canvas = useRef<HTMLCanvasElement>(null)
   const engine = useRef<RisingLinesEngine | null>(null)
   const api = useRef({ launch: () => {}, replay: () => {} })
@@ -22,25 +22,33 @@ export const RisingLines = forwardRef<RisingLinesHandle, Props>(function RisingL
     const coarse = window.matchMedia('(pointer: coarse)').matches || window.innerWidth < 768
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     const dpr = Math.min(window.devicePixelRatio || 1, coarse ? 1.5 : 2)
-    const eng = new RisingLinesEngine({ density, mobile: coarse })
+    const eng = new RisingLinesEngine({ density, mobile: coarse, calm })
     engine.current = eng
     let raf = 0
     let last = 0
     let visible = true
     let tabVisible = !document.hidden
 
+    let n = 0
+    const measure = () => {
+      const a = document.querySelector(avoidSelector ?? '')?.getBoundingClientRect()
+      const c = el.getBoundingClientRect()
+      eng.setAvoid(a ? { x: a.left - c.left, y: a.top - c.top, w: a.width, h: a.height } : null)
+    }
     const size = () => {
       const r = el.getBoundingClientRect()
       el.width = Math.max(1, Math.round(r.width * dpr))
       el.height = Math.max(1, Math.round(r.height * dpr))
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
       eng.resize(r.width, r.height)
+      if (avoidSelector) measure()
       if (reduce) { eng.settle(); eng.draw(ctx) }
     }
     const frame = (t: number) => {
       raf = 0
       const dt = last ? (t - last) / 1000 : 0.016
       last = t
+      if (avoidSelector && ++n % 20 === 1) measure()
       eng.update(dt)
       eng.draw(ctx)
       schedule()
@@ -81,7 +89,7 @@ export const RisingLines = forwardRef<RisingLinesHandle, Props>(function RisingL
       window.removeEventListener('pointermove', onMove)
       window.removeEventListener('pointerdown', onDown)
     }
-  }, [density])
+  }, [density, calm, avoidSelector])
 
   return <canvas ref={canvas} aria-hidden className={`pointer-events-none absolute inset-0 h-full w-full ${className}`} />
 })

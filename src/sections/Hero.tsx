@@ -11,8 +11,10 @@ import { useDesktopMotion } from '../lib/useDesktopMotion'
 // The WebGL aurora is only fetched on a big screen with motion allowed (see useDesktopMotion).
 const Aurora = lazy(() => import('../components/reactbits/Aurora'))
 
-/** Hero background. Switch to 'aurora' to go back to the old one. */
-const HERO_BG: 'rising-lines' | 'aurora' = 'rising-lines'
+/** Hero background, for comparison only: ?bg=calm | lines | aurora (default calm). */
+type HeroBg = 'calm' | 'lines' | 'aurora'
+const q = new URLSearchParams(window.location.search).get('bg')
+const HERO_BG: HeroBg = q === 'lines' || q === 'aurora' ? q : 'calm'
 
 type State = 'idle' | 'starting' | 'live' | 'ended'
 const ROTATE_MS = 5000
@@ -57,9 +59,9 @@ export function Hero({ onFace }: { onFace: (id: string) => void }) {
 
   return (
     <section id="faces" className="relative overflow-x-clip pt-[84px] pb-12 sm:pt-28 lg:flex lg:min-h-[100svh] lg:items-center lg:pt-24 lg:pb-16">
-      {HERO_BG === 'rising-lines' && (
+      {HERO_BG !== 'aurora' && (
         <>
-          <RisingLines />
+          <RisingLines key={HERO_BG} calm={HERO_BG === 'calm'} avoidSelector="[data-hero-card]" />
           <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-r from-space/70 via-space/20 to-transparent lg:from-space/80" />
         </>
       )}
@@ -86,7 +88,7 @@ export function Hero({ onFace }: { onFace: (id: string) => void }) {
         </div>
 
         <div className="mx-auto w-full max-w-[min(100%,440px)] lg:max-w-none">
-          <div className="relative aspect-[3/4] w-full overflow-hidden rounded-[32px] shadow-[0_0_0_1px_rgb(245_247_255/0.12),0_50px_110px_-30px_rgb(0_0_0/0.95)] sm:rounded-[40px]">
+          <div data-hero-card className="relative aspect-[3/4] w-full overflow-hidden rounded-[32px] shadow-[0_0_0_1px_rgb(245_247_255/0.12),0_50px_110px_-30px_rgb(0_0_0/0.95)] sm:rounded-[40px]">
             {FACES.map((f, i) => (
               <motion.div
                 key={f.id}
