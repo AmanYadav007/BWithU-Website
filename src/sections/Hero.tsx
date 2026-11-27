@@ -1,20 +1,11 @@
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { Phone, PhoneOff } from 'lucide-react'
-import { lazy, Suspense, useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import BlurText from '../components/reactbits/BlurText'
 import { FACES } from '../lib/companions'
 import { demoOrigin, demoUrl, parseDemoMessage, type DemoEvent } from '../lib/demo'
 import { callLink, site } from '../lib/site'
-import { RisingLines } from '../components/RisingLines/RisingLines'
-import { useDesktopMotion } from '../lib/useDesktopMotion'
-
-// The WebGL aurora is only fetched on a big screen with motion allowed (see useDesktopMotion).
-const Aurora = lazy(() => import('../components/reactbits/Aurora'))
-
-/** Hero background, for comparison only: ?bg=calm | lines | aurora (default calm). */
-type HeroBg = 'calm' | 'lines' | 'aurora'
-const q = new URLSearchParams(window.location.search).get('bg')
-const HERO_BG: HeroBg = q === 'lines' || q === 'aurora' ? q : 'calm'
+import { AuroraFlow } from '../components/AuroraFlow'
 
 type State = 'idle' | 'starting' | 'live' | 'ended'
 const ROTATE_MS = 5000
@@ -27,7 +18,6 @@ export function Hero({ onFace }: { onFace: (id: string) => void }) {
   const [index, setIndex] = useState(0)
   const [state, setState] = useState<State>('idle')
   const reduce = useReducedMotion()
-  const desktopMotion = useDesktopMotion()
   const face = FACES[index]
   const running = state === 'starting' || state === 'live'
 
@@ -59,19 +49,8 @@ export function Hero({ onFace }: { onFace: (id: string) => void }) {
 
   return (
     <section id="faces" className="relative overflow-x-clip pt-[84px] pb-12 sm:pt-28 lg:flex lg:min-h-[100svh] lg:items-center lg:pt-24 lg:pb-16">
-      {HERO_BG !== 'aurora' && (
-        <>
-          <RisingLines key={HERO_BG} calm={HERO_BG === 'calm'} avoidSelector="[data-hero-card]" />
-          <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-r from-space/70 via-space/20 to-transparent lg:from-space/80" />
-        </>
-      )}
-      {HERO_BG === 'aurora' && desktopMotion && (
-        <Suspense fallback={null}>
-          <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-[640px] [mask-image:linear-gradient(to_bottom,black,transparent)]">
-            <Aurora colorStops={['#7c3aed', '#38bdf8', '#9b4dff']} amplitude={0.9} blend={0.6} speed={0.5} opacity={0.45} dpr={1} />
-          </div>
-        </Suspense>
-      )}
+      <AuroraFlow />
+      <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-r from-space/60 via-space/10 to-transparent" />
 
       <div className="container-x relative grid items-center gap-8 lg:grid-cols-[1fr_minmax(0,520px)] lg:gap-16">
         <div className="text-center lg:text-left">
