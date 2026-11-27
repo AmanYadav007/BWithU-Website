@@ -6,7 +6,7 @@ import { site } from '../lib/site'
 
 export const faqs = [
   { q: 'Is it free?', a: `Yes. ${site.freeMinutes} free minutes a day, no sign-up.` },
-  { q: 'Is it private?', a: 'We don’t store your call audio or transcripts. What she remembers about you stays on your device, and you can delete it anytime.' },
+  { q: 'Is it private?', a: 'We don’t store your call audio or transcripts. What she remembers about you is saved on your device, not our servers, and you can delete it anytime.' },
   { q: 'Which languages?', a: 'English, Hindi, Hinglish and Spanish.' },
   { q: 'Do I need an app?', a: 'No. It works in your browser, on your phone or computer.' },
   { q: 'Is she a real person?', a: 'No. She’s an AI companion, with a lifelike face and voice.' },

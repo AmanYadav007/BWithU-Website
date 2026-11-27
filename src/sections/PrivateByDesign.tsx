@@ -6,7 +6,7 @@ import { site } from '../lib/site'
 
 const CARDS = [
   { icon: EyeOff, text: 'We don’t store your call audio or transcripts' },
-  { icon: ShieldCheck, text: 'Her memory of you stays on your device' },
+  { icon: ShieldCheck, text: 'Her memory of you is saved on your device, not our servers' },
   { icon: Trash2, text: 'Delete it anytime' },
 ]
 
