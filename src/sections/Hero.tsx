@@ -1,235 +1,169 @@
-import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { CompanionCard, type DemoState } from '../components/CompanionCard'
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
+import { Phone, PhoneOff } from 'lucide-react'
+import { lazy, Suspense, useCallback, useEffect, useState } from 'react'
 import BlurText from '../components/reactbits/BlurText'
-import CircularGallery, { type GalleryControl } from '../components/reactbits/CircularGallery'
-import ShinyText from '../components/reactbits/ShinyText'
-import { type DemoEvent } from '../lib/demo'
 import { FACES } from '../lib/companions'
+import { demoOrigin, demoUrl, parseDemoMessage, type DemoEvent } from '../lib/demo'
+import { callLink, site } from '../lib/site'
 import { useDesktopMotion } from '../lib/useDesktopMotion'
-import { useGallerySupport } from '../lib/useGallerySupport'
-import { site } from '../lib/site'
 
 // The WebGL aurora is only fetched on a big screen with motion allowed (see useDesktopMotion).
 const Aurora = lazy(() => import('../components/reactbits/Aurora'))
 
-/**
- * Hero: the four companions on a curved, draggable gallery (React Bits CircularGallery, WebGL). "Try 30 seconds" runs
- * the real call in a DOM card laid over the centre card; the gallery is paused while it runs. Without WebGL2, or with
- * reduced motion, the same four sit in a plain scroll-snap slider. Moving to another companion ends a running test.
- */
-const GALLERY_ITEMS = FACES.map((f) => ({ image: `/faces/hd/${f.id}.webp`, text: f.name, alt: `${f.name}, a BwithU companion` }))
-const CARD_RADIUS = 0.1 // of the card width; the call card overlay uses the same
+type State = 'idle' | 'starting' | 'live' | 'ended'
+const ROTATE_MS = 5000
 
+/**
+ * Hero = an incoming call. One companion, big; the face crossfades to the next every few seconds.
+ * "Accept" runs the real 30-second call (the app in an iframe) inside the same frame; "Not now" scrolls down.
+ */
 export function Hero({ onFace }: { onFace: (id: string) => void }) {
   const [index, setIndex] = useState(0)
-  const [state, setState] = useState<DemoState>('idle')
-  const track = useRef<HTMLUListElement>(null)
+  const [state, setState] = useState<State>('idle')
+  const reduce = useReducedMotion()
   const desktopMotion = useDesktopMotion()
-  const gallery = useGallerySupport()
-  const control = useRef<GalleryControl | null>(null)
-  const [card, setCard] = useState({ w: 0, h: 0 })
-  const [overlayIn, setOverlayIn] = useState(false) // fade state of the call card
-  const [overlayMounted, setOverlayMounted] = useState(false)
   const face = FACES[index]
-  const dpr = useMemo(() => Math.min(window.devicePixelRatio || 1, window.matchMedia('(pointer: coarse)').matches ? 1.5 : 2), [])
-  const calling = state !== 'idle'
+  const running = state === 'starting' || state === 'live'
 
   useEffect(() => onFace(face.id), [face.id, onFace])
 
-  const go = useCallback((i: number) => {
-    if (control.current) return control.current.focus(((i % FACES.length) + FACES.length) % FACES.length)
-    const row = track.current
-    const card = row?.children[Math.max(0, Math.min(FACES.length - 1, i))] as HTMLElement | undefined
-    // Scroll the row itself (scrollIntoView would also move the page up and down).
-    if (row && card) row.scrollTo({ left: card.offsetLeft + card.offsetWidth / 2 - row.clientWidth / 2, behavior: 'smooth' })
-  }, [])
-
-  // Which card is in the middle: the one whose centre is nearest the track's centre.
+  // Rotate while idle. Picking a tab restarts the clock (index is a dependency).
   useEffect(() => {
-    const el = track.current
-    if (!el || gallery) return
-    let raf = 0
-    const update = () => {
-      raf = 0
-      const mid = el.scrollLeft + el.clientWidth / 2
-      let best = 0
-      let dist = Infinity
-      Array.from(el.children).forEach((c, i) => {
-        const card = c as HTMLElement
-        const d = Math.abs(card.offsetLeft + card.offsetWidth / 2 - mid)
-        if (d < dist) [best, dist] = [i, d]
-      })
-      setIndex((prev) => {
-        if (prev !== best) setState('idle') // a different companion: any test call ends
-        return best
-      })
-    }
-    const onScroll = () => {
-      if (!raf) raf = requestAnimationFrame(update)
-    }
-    el.addEventListener('scroll', onScroll, { passive: true })
-    return () => {
-      el.removeEventListener('scroll', onScroll)
-      if (raf) cancelAnimationFrame(raf)
-    }
-  }, [gallery])
+    if (state !== 'idle' || reduce) return
+    const t = window.setTimeout(() => setIndex((i) => (i + 1) % FACES.length), ROTATE_MS)
+    return () => window.clearTimeout(t)
+  }, [index, state, reduce])
 
-  const onActive = useCallback((i: number) => {
+  useEffect(() => {
+    if (!running) return
+    const onMessage = (e: MessageEvent) => {
+      const ev: DemoEvent | null = parseDemoMessage(e.origin, e.data, demoOrigin)
+      if (!ev) return
+      if (ev.type === 'ready') setState((s) => (s === 'starting' ? 'live' : s))
+      else setState('ended')
+    }
+    window.addEventListener('message', onMessage)
+    return () => window.removeEventListener('message', onMessage)
+  }, [running])
+
+  const pick = useCallback((i: number) => {
     setIndex(i)
     setState('idle')
   }, [])
 
-  // The call card fades in once the gallery has settled the chosen card in the middle, and out when we are back to idle.
-  useEffect(() => {
-    if (!gallery) return
-    if (state !== 'idle') {
-      setOverlayMounted(true)
-      const t = window.setTimeout(() => setOverlayIn(true), 420)
-      return () => window.clearTimeout(t)
-    }
-    setOverlayIn(false)
-    const t = window.setTimeout(() => setOverlayMounted(false), 400)
-    return () => window.clearTimeout(t)
-  }, [state, gallery])
-
-  const tryNow = () => {
-    control.current?.focus(index) // settle the chosen card exactly in the middle first
-    setState('starting')
-  }
-
-  const onEvent = useCallback((e: DemoEvent) => {
-    if (e.type === 'ready') setState((s) => (s === 'starting' ? 'live' : s))
-    else setState('ended')
-  }, [])
-
   return (
-    <section id="faces" className="relative overflow-x-clip pt-24 pb-14 sm:pt-28 lg:pt-32 lg:pb-20">
-      <div aria-hidden className="glow-aurora pointer-events-none absolute top-0 left-1/2 h-[820px] w-[900px] -translate-x-1/2" />
+    <section id="faces" className="relative overflow-x-clip pt-[84px] pb-12 sm:pt-28 lg:flex lg:min-h-[100svh] lg:items-center lg:pt-24 lg:pb-16">
       {desktopMotion && (
         <Suspense fallback={null}>
           <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-[640px] [mask-image:linear-gradient(to_bottom,black,transparent)]">
-            <Aurora colorStops={['#7c3aed', '#38bdf8', '#9b4dff']} amplitude={0.9} blend={0.6} speed={0.5} opacity={0.55} dpr={1} />
+            <Aurora colorStops={['#7c3aed', '#38bdf8', '#9b4dff']} amplitude={0.9} blend={0.6} speed={0.5} opacity={0.45} dpr={1} />
           </div>
         </Suspense>
       )}
 
-      <div className="container-x relative flex flex-col items-center text-center">
-        <h1 className="text-[clamp(2.25rem,6.4vw,4.4rem)] leading-[1.02] font-semibold tracking-[-0.03em]">
-          <BlurText text="Someone to talk to." trigger="load" animateBy="words" delay={90} className="justify-center" />
-          <span className="text-gradient block">Face to face.</span>
-          <span className="sr-only"> An AI companion you can video-call, in English, Hindi and Hinglish.</span>
-        </h1>
-        <p className="mt-4 text-[17px] text-ink-2">Pick someone. Say hi for 30 seconds.</p>
-
-        {gallery ? (
-          <div className="relative mt-2 w-full">
-            <div className="relative mx-auto h-[500px] w-full max-w-[1280px] sm:h-[560px]">
-              <CircularGallery
-                items={GALLERY_ITEMS}
-                aria-label="Companions"
-                bend={1.8}
-                itemSize={1.34}
-                itemAspect={0.75}
-                gap={0.32}
-                borderRadius={CARD_RADIUS}
-                wave={0.5}
-                fadeEdges={0.22}
-                shadow={0.4}
-                textColor="#f5f6fa"
-                font={'600 30px "Manrope"'}
-                showTitles={false}
-                scrollSpeed={2}
-                scrollEase={0.06}
-                snap
-                autoScroll={0.3}
-                openOnClick={false}
-                intro
-                dpr={dpr}
-                paused={calling}
-                onMetrics={setCard}
-                onActiveChange={onActive}
-                controlRef={control}
-              />
-              {overlayMounted && card.w > 0 && (
-                <div
-                  className={`absolute top-1/2 left-1/2 overflow-hidden transition duration-[400ms] ease-out ${overlayIn ? 'scale-100 opacity-100' : 'scale-[0.96] opacity-0'}`}
-                  style={{ width: card.w, height: card.h, borderRadius: card.w * CARD_RADIUS, translate: '-50% -50%' }}
-                >
-                  <CompanionCard face={face} active state={state} onTry={tryNow} onEvent={onEvent} overlay />
-                </div>
-              )}
-            </div>
-            <div className="mt-2 flex h-[56px] justify-center">
-              {state === 'idle' && (
-                <button type="button" onClick={tryNow} className="btn btn-primary h-14 px-9 text-[17px] font-semibold">
-                  <ShinyText text="Try 30 seconds" color="#ffffff" shineColor="#c4b5fd" speed={3} />
-                </button>
-              )}
-              {state === 'starting' && <p className="pt-3.5 text-[15px] text-ink-2">Calling {face.name}…</p>}
-              {state === 'ended' && (
-                <button type="button" onClick={() => setState('idle')} className="btn btn-ghost h-12 px-6 text-[15px]">
-                  Choose someone else
-                </button>
-              )}
-            </div>
+      <div className="container-x relative grid items-center gap-8 lg:grid-cols-[1fr_minmax(0,520px)] lg:gap-16">
+        <div className="text-center lg:text-left">
+          <h1 className="text-[clamp(2.1rem,7vw,3rem)] sm:text-[clamp(2.4rem,5vw,3.6rem)] lg:text-[clamp(2.6rem,4vw,3.9rem)] leading-[1.03] font-semibold tracking-[-0.03em]">
+            <BlurText text="Someone to talk to." trigger="load" animateBy="words" delay={90} className="justify-center lg:justify-start" />
+            <span className="text-gradient block">Face to face.</span>
+            <span className="sr-only"> An AI companion you can video-call, in English, Hindi, Hinglish and Spanish.</span>
+          </h1>
+          <p className="mt-4 text-[17px] text-ink-2 lg:text-[19px]">Pick up. Say hi. 30 seconds, free.</p>
+          <div className="mt-8 hidden flex-col items-start gap-3 lg:flex">
+            <a href={callLink(face.id)} className="btn btn-primary h-[56px] px-9 text-[17px] font-semibold">Call now</a>
+            <p className="text-[14px] text-ink-3">{site.freeMinutes} free minutes a day · No sign-up</p>
           </div>
-        ) : (
-        <div className="relative mt-9 w-full">
-          <ul
-            ref={track}
-            aria-label="Companions"
-            className="no-scrollbar flex snap-x snap-mandatory items-start gap-5 overflow-x-auto px-[calc(50%-min(39vw,170px))] pb-2"
-          >
-            {FACES.map((f, i) => (
-              <li
-                key={f.id}
-                className={`w-[min(78vw,340px)] shrink-0 snap-center transition duration-500 ${i === index ? 'scale-100 opacity-100' : 'scale-[0.88] opacity-50'}`}
-                onClick={() => i !== index && go(i)}
-                aria-current={i === index}
-              >
-                <div className={i === index ? '' : 'pointer-events-none'}>
-                  <CompanionCard
-                    face={f}
-                    active={i === index}
-                    state={i === index ? state : 'idle'}
-                    onTry={() => setState('starting')}
-                    onEvent={onEvent}
-                  />
-                </div>
-              </li>
-            ))}
-          </ul>
         </div>
 
-        )}
+        <div className="mx-auto w-full max-w-[min(100%,440px)] lg:max-w-none">
+          <div className="relative aspect-[3/4] w-full overflow-hidden rounded-[32px] shadow-[0_0_0_1px_rgb(245_247_255/0.12),0_50px_110px_-30px_rgb(0_0_0/0.95)] sm:rounded-[40px]">
+            {FACES.map((f, i) => (
+              <motion.div
+                key={f.id}
+                aria-hidden={i !== index}
+                initial={false}
+                animate={{ opacity: i === index ? 1 : 0 }}
+                transition={{ duration: reduce ? 0 : 1.1, ease: 'easeInOut' }}
+                className="absolute inset-0"
+              >
+                <motion.img
+                  src={f.image}
+                  alt={i === index ? `${f.name}, a BwithU companion` : ''}
+                  width={768}
+                  height={1024}
+                  draggable={false}
+                  fetchPriority={i === 0 ? 'high' : 'auto'}
+                  loading={i === 0 ? 'eager' : 'lazy'}
+                  animate={reduce ? undefined : { scale: i === index ? [1, 1.05] : 1 }}
+                  transition={{ duration: ROTATE_MS / 1000 + 2, ease: 'linear' }}
+                  className={`h-full w-full object-cover object-[50%_18%] ${state === 'ended' ? 'blur-[2px] brightness-50' : ''}`}
+                />
+              </motion.div>
+            ))}
+            <span aria-hidden className="absolute inset-x-0 top-0 h-[24%] bg-gradient-to-b from-space/80 to-transparent" />
+            <span aria-hidden className="absolute inset-x-0 bottom-0 h-[26%] bg-gradient-to-b from-transparent to-space/95" />
 
-        <div className="mt-1 flex flex-col items-center gap-3">
-          <div className="flex items-center gap-4">
-            <button type="button" aria-label="Previous companion" onClick={() => go(index - 1)} disabled={calling || (!gallery && index === 0)} className="btn btn-ghost h-10 w-10 p-0 disabled:opacity-30">
-              <ChevronLeft size={20} />
-            </button>
-          <div className="flex items-center gap-2" role="tablist" aria-label="Choose a companion">
+            {state === 'idle' && (
+              <>
+                <div className="absolute top-5 left-5 right-5 text-left sm:top-7 sm:left-7">
+                  <AnimatePresence mode="wait">
+                    <motion.div key={face.id} initial={reduce ? false : { opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.4 }}>
+                      <p className="text-[clamp(1.6rem,4vw,2.2rem)] leading-none font-semibold tracking-[-0.02em]">{face.name}</p>
+                      <p className="mt-2 flex items-center gap-2 text-[14px] text-ink-2">
+                        <span aria-hidden className="relative flex h-2.5 w-2.5">
+                          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-cyan opacity-70" />
+                          <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-cyan" />
+                        </span>
+                        is calling you…
+                      </p>
+                    </motion.div>
+                  </AnimatePresence>
+                </div>
+                <div className="absolute inset-x-0 bottom-5 flex items-end justify-center gap-14 sm:bottom-7">
+                  <button type="button" onClick={() => document.getElementById('see')?.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' })} className="group flex flex-col items-center gap-2 text-[13px] text-ink-2">
+                    <span className="grid h-16 w-16 place-items-center rounded-full bg-white/12 backdrop-blur transition group-hover:bg-white/20"><PhoneOff size={24} /></span>
+                    Not now
+                  </button>
+                  <button type="button" onClick={() => setState('starting')} className="group flex flex-col items-center gap-2 text-[13px] font-semibold text-ink">
+                    <span className="relative grid h-16 w-16 place-items-center rounded-full btn-primary">
+                      <span aria-hidden className="absolute inset-0 animate-ping rounded-full bg-aurora/50" />
+                      <Phone size={26} className="relative" />
+                    </span>
+                    Accept
+                  </button>
+                </div>
+              </>
+            )}
+
+            {running && (
+              <iframe title={`Test call with ${face.name}`} src={demoUrl(face.id)} allow="microphone; autoplay" className="absolute inset-0 h-full w-full border-0 bg-space-2" />
+            )}
+            {state === 'starting' && <p className="absolute inset-x-0 top-1/2 text-center text-[15px] text-ink-2">Calling {face.name}…</p>}
+
+            {state === 'ended' && (
+              <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 px-6 text-center">
+                <p className="text-[24px] font-semibold tracking-[-0.012em]">Stay on the line.</p>
+                <a href={callLink(face.id)} className="btn btn-primary h-14 px-9 text-[17px] font-semibold">Call now</a>
+                <button type="button" onClick={() => setState('idle')} className="text-[14px] text-ink-2 underline underline-offset-4">Choose someone else</button>
+              </div>
+            )}
+          </div>
+
+          <div role="tablist" aria-label="Choose a companion" className="mt-5 flex justify-center gap-2 lg:gap-3">
             {FACES.map((f, i) => (
               <button
                 key={f.id}
                 type="button"
                 role="tab"
                 aria-selected={i === index}
-                aria-label={f.name}
-                onClick={() => go(i)}
-                disabled={calling}
-                className={`h-2 rounded-full transition-all ${i === index ? 'w-7 bg-aurora-soft' : 'w-2 bg-white/25'}`}
-              />
+                onClick={() => pick(i)}
+                className={`rounded-full px-4 py-2 text-[14px] font-medium transition-colors ${i === index ? 'bg-white/12 text-ink' : 'text-ink-3 hover:text-ink'}`}
+              >
+                {f.name}
+              </button>
             ))}
           </div>
-            <button type="button" aria-label="Next companion" onClick={() => go(index + 1)} disabled={calling || (!gallery && index === FACES.length - 1)} className="btn btn-ghost h-10 w-10 p-0 disabled:opacity-30">
-              <ChevronRight size={20} />
-            </button>
-          </div>
-          <p className="text-[18px] font-semibold tracking-[-0.01em]">{face.name}</p>
-          <p className="-mt-2 text-[15px] text-ink-2">{face.lead}</p>
-          <p className="text-[14px] text-ink-3">{site.freeMinutes} free minutes a day · No sign-up</p>
+          <p className="mt-4 text-center text-[14px] text-ink-3 lg:hidden">{site.freeMinutes} free minutes a day · No sign-up</p>
         </div>
       </div>
     </section>
