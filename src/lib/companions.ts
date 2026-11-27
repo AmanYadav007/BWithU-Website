@@ -5,10 +5,10 @@ export type Face = { id: string; name: string; image: string; lead: string; more
 
 // Aiko first, as in the app's character picker.
 export const FACES: Face[] = [
-  { id: 'aiko', name: 'Aiko', image: '/faces/aiko.jpg', lead: 'The clear-headed coach.', more: 'Calm, practical, one step at a time.' },
-  { id: 'maya', name: 'Maya', image: '/faces/maya.jpg', lead: 'The warm listener.', more: 'Kind, calm, and she remembers the little things.' },
-  { id: 'elena', name: 'Elena', image: '/faces/elena.jpg', lead: 'The curious one.', more: 'Big questions, honest takes, a dry sense of humour.' },
-  { id: 'zara', name: 'Zara', image: '/faces/zara.jpg', lead: 'The fun one.', more: 'Quick-witted, upbeat, great at turning a bad day around.' },
+  { id: 'aiko', name: 'Aiko', image: '/faces/hd/aiko.webp', lead: 'The clear-headed coach.', more: 'Calm, practical, one step at a time.' },
+  { id: 'maya', name: 'Maya', image: '/faces/hd/maya.webp', lead: 'The warm listener.', more: 'Kind, calm, and she remembers the little things.' },
+  { id: 'elena', name: 'Elena', image: '/faces/hd/elena.webp', lead: 'The curious one.', more: 'Big questions, honest takes, a dry sense of humour.' },
+  { id: 'zara', name: 'Zara', image: '/faces/hd/zara.webp', lead: 'The fun one.', more: 'Quick-witted, upbeat, great at turning a bad day around.' },
 ]
 
 export type LanguageId = 'en' | 'hi' | 'es'

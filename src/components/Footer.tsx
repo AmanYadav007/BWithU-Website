@@ -2,11 +2,12 @@ import { site } from '../lib/site'
 import { Logo } from './Logo'
 
 const links = [
-  { label: 'Companions', href: '/#faces' },
+  { label: 'Companions', href: '/#companions' },
   { label: 'Feedback', href: site.feedback },
   { label: 'Privacy', href: site.privacy },
   { label: 'Terms', href: site.terms },
   { label: 'Contact', href: `mailto:${site.email}` },
+  { label: 'Instagram', href: site.instagram, external: true },
   { label: 'X', href: site.x, external: true },
 ]
 

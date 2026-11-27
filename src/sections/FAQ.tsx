@@ -1,54 +1,62 @@
+import { AnimatePresence, motion } from 'framer-motion'
+import { Plus } from 'lucide-react'
+import { useId, useState } from 'react'
+import { SectionHeader } from '../components/SectionHeader'
+import { site } from '../lib/site'
 
 export const faqs = [
-  {
-    q: 'Is BwithU free?',
-    a: 'Yes. Everyone gets 7 free minutes a day, and a single call can run up to 7 minutes. No card, no trial.',
-  },
-  {
-    q: 'Do I need to download an app or make an account?',
-    a: 'No. Open app.bwithu.live in your browser, pick a companion and start talking. There’s nothing to install or sign up for.',
-  },
-  {
-    q: 'Is it a real person?',
-    a: 'No. Your companion is an AI with a lifelike face and voice. It will always tell you it’s an AI if you ask.',
-  },
-  {
-    q: 'Are my calls recorded?',
-    a: 'No. Your voice is sent to our AI providers to understand you and reply in real time, and then it’s gone. We don’t store audio or transcripts.',
-  },
-  {
-    q: 'Which devices work?',
-    a: 'Chrome, Safari and Edge on phones, tablets and computers. Headphones give the smoothest conversation, so your companion doesn’t hear itself.',
-  },
-  {
-    q: 'What languages can I speak?',
-    a: 'English, Hindi and Hinglish, or Spanish. Pick your language before the call, and your companion talks with you in it, in a natural voice. In Hinglish they mix Hindi and English the way friends really do.',
-  },
-  {
-    q: 'Can I make a companion from my own photo?',
-    a: 'Soon. Join the list above and we’ll email you when it’s ready. Custom companions will be private to you.',
-  },
+  { q: 'Is it free?', a: `Yes. ${site.freeMinutes} free minutes a day, no sign-up.` },
+  { q: 'Is it private?', a: 'We don’t store your call audio or transcripts. What she remembers about you stays on your device, and you can delete it anytime.' },
+  { q: 'Which languages?', a: 'English, Hindi, Hinglish and Spanish.' },
+  { q: 'Do I need an app?', a: 'No. It works in your browser, on your phone or computer.' },
+  { q: 'Is she a real person?', a: 'No. She’s an AI companion, with a lifelike face and voice.' },
 ]
 
-/** Collapsed by default: the answers stay in the page for search engines, but the page stays quiet. */
 export function FAQ() {
+  const [open, setOpen] = useState<number | null>(0)
+  const base = useId()
   return (
-    <section id="faq" className="relative pb-16">
-      <div className="container-x max-w-[720px]">
-        <details className="group border-t border-line py-2">
-          <summary className="flex cursor-pointer list-none items-center justify-between py-5 text-[15px] font-medium text-ink-3 hover:text-ink [&::-webkit-details-marker]:hidden">
-            Questions
-            <span aria-hidden className="text-[20px] transition-transform group-open:rotate-45">+</span>
-          </summary>
-          <ul>
-            {faqs.map((f) => (
-              <li key={f.q} className="border-t border-line py-5">
-                <h3 className="text-[16px] font-semibold">{f.q}</h3>
-                <p className="mt-2 text-[15px] leading-relaxed text-ink-2">{f.a}</p>
+    <section id="faq" className="relative py-20 sm:py-28">
+      <div className="container-x max-w-[760px]">
+        <SectionHeader eyebrow="FAQ" title="Quick answers." align="center" />
+        <ul className="mt-12 divide-y divide-line border-y border-line">
+          {faqs.map((f, i) => {
+            const isOpen = open === i
+            return (
+              <li key={f.q}>
+                <h3>
+                  <button
+                    type="button"
+                    id={`${base}-b${i}`}
+                    aria-expanded={isOpen}
+                    aria-controls={`${base}-p${i}`}
+                    onClick={() => setOpen(isOpen ? null : i)}
+                    className="flex w-full items-center justify-between gap-4 py-5 text-left text-[18px] font-semibold"
+                  >
+                    {f.q}
+                    <Plus aria-hidden size={20} className={`shrink-0 text-ink-2 transition-transform duration-300 ${isOpen ? 'rotate-45' : ''}`} />
+                  </button>
+                </h3>
+                <AnimatePresence initial={false}>
+                  {isOpen && (
+                    <motion.div
+                      id={`${base}-p${i}`}
+                      role="region"
+                      aria-labelledby={`${base}-b${i}`}
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="overflow-hidden"
+                    >
+                      <p className="pb-5 text-[16px] leading-relaxed text-ink-2">{f.a}</p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </li>
-            ))}
-          </ul>
-        </details>
+            )
+          })}
+        </ul>
       </div>
     </section>
   )

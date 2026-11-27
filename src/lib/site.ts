@@ -10,7 +10,8 @@ export const site = {
   privacy: 'https://app.bwithu.live/ui/privacy.html',
   terms: 'https://app.bwithu.live/ui/terms.html',
   email: 'hello@bwithu.live',
-  x: 'https://x.com/BwithUAI',
+  x: 'https://x.com/BwithU0',
+  instagram: 'https://www.instagram.com/bwith_u00/',
   /** Free talk time per person per day and per call (matches the app's limits). */
   freeMinutes: 7,
   /**
@@ -26,3 +27,6 @@ export function appLink(params: { face?: string; voice?: string } = {}) {
   const query = new URLSearchParams(Object.entries(params).filter(([, v]) => v) as [string, string][]).toString()
   return query ? `${site.app}?${query}` : site.app
 }
+
+/** The app's own call links use ?face=<id> (store/companion.ts reads it). */
+export const callLink = (faceId?: string) => appLink({ face: faceId })

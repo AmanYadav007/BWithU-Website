@@ -2,13 +2,14 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { FACES } from '../lib/companions'
-import { appLink, site } from '../lib/site'
+import { callLink } from '../lib/site'
 import { Logo } from './Logo'
 
 const links = [
-  { href: '/#faces', label: 'Companions' },
+  { href: '/#companions', label: 'Companions' },
+  { href: '/#how', label: 'How it works' },
   { href: '/#privacy', label: 'Privacy' },
-  { href: site.feedback, label: 'Feedback' },
+  { href: '/#faq', label: 'FAQ' },
 ]
 
 export function Nav({ faceId }: { faceId: string }) {
@@ -47,8 +48,8 @@ export function Nav({ faceId }: { faceId: string }) {
         </div>
 
         <div className="flex items-center gap-2">
-          <a href={appLink({ face: face.id })} className="btn btn-primary hidden h-11 px-6 text-[15px] sm:inline-flex">
-            Call {face.name}
+          <a href={callLink(face.id)} className="btn btn-primary h-11 px-5 text-[15px] sm:px-6">
+            Call now
           </a>
           <button
             type="button"
@@ -84,8 +85,8 @@ export function Nav({ faceId }: { faceId: string }) {
                 {l.label}
               </motion.a>
             ))}
-            <a href={appLink({ face: face.id })} className="btn btn-primary mt-auto h-14 text-[16px]">
-              Call {face.name}
+            <a href={callLink(face.id)} className="btn btn-primary mt-auto h-14 text-[16px]">
+              Call now
             </a>
           </motion.div>
         )}

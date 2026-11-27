@@ -1,31 +1,29 @@
 import { ArrowRight } from 'lucide-react'
-import BlurText from '../components/reactbits/BlurText'
 import { Reveal } from '../components/Reveal'
 import { FACES } from '../lib/companions'
-import { appLink, site } from '../lib/site'
+import { callLink, site } from '../lib/site'
 
 export function FinalCTA({ faceId }: { faceId: string }) {
   const face = FACES.find((f) => f.id === faceId) ?? FACES[0]
   return (
-    <section className="relative overflow-hidden py-24 sm:py-32">
-      <div aria-hidden className="glow-aurora pointer-events-none absolute top-0 left-1/2 h-full w-[1000px] -translate-x-1/2 animate-drift" />
-      <div aria-hidden className="glow-cyan pointer-events-none absolute right-[10%] bottom-0 h-[420px] w-[560px]" />
-      <Reveal className="container-x relative text-center">
-        <div className="relative mx-auto flex w-fit -space-x-3.5 sm:-space-x-4">
-          {FACES.map((f) => (
-            <img key={f.id} src={f.image} alt="" loading="lazy" className="h-[60px] w-[60px] rounded-full border-[3px] border-space object-cover object-[50%_25%] sm:h-[76px] sm:w-[76px]" />
-          ))}
-          <span aria-hidden className="absolute -right-1 bottom-0.5 h-4 w-4 rounded-full border-[3px] border-space bg-cyan" />
-        </div>
-
-        <h2 className="mx-auto mt-10 text-[clamp(2.3rem,6.4vw,4.75rem)] leading-[1.02] font-semibold tracking-[-0.03em]">
-          <BlurText text="Someone’s waiting to say hi." animateBy="words" delay={80} className="justify-center" />
-        </h2>
-        <a href={appLink({ face: face.id })} className="btn btn-primary mt-10 h-[60px] w-full max-w-[350px] px-9 text-[17px] font-semibold sm:w-auto">
-          Call {face.name} <ArrowRight size={19} />
-        </a>
-        <p className="mt-5 text-[14px] text-ink-3">{site.freeMinutes} free minutes a day · No sign-up</p>
-      </Reveal>
+    <section className="relative py-20 sm:py-28">
+      <div className="container-x">
+        <Reveal className="relative overflow-hidden rounded-[36px] border border-line-2 bg-space-2 px-6 py-16 text-center sm:py-24">
+          <div aria-hidden className="glow-aurora pointer-events-none absolute top-[-40%] left-1/2 h-[120%] w-[80%] -translate-x-1/2 opacity-60" />
+          <div className="relative">
+            <div className="mx-auto flex w-fit -space-x-4">
+              {FACES.map((f) => (
+                <img key={f.id} src={f.image} alt="" loading="lazy" width={76} height={76} className="h-[60px] w-[60px] rounded-full border-[3px] border-space-2 object-cover object-[50%_25%] sm:h-[76px] sm:w-[76px]" />
+              ))}
+            </div>
+            <h2 className="mx-auto mt-8 max-w-3xl text-[clamp(2.3rem,6vw,4.25rem)] leading-[1.04] font-semibold tracking-[-0.03em]">She’s ready when you are.</h2>
+            <a href={callLink(face.id)} className="btn btn-primary mt-10 h-[60px] w-full max-w-[320px] px-9 text-[17px] font-semibold sm:w-auto">
+              Call now <ArrowRight size={19} />
+            </a>
+            <p className="mt-5 text-[14px] text-ink-3">{site.freeMinutes} free minutes a day · No sign-up</p>
+          </div>
+        </Reveal>
+      </div>
     </section>
   )
 }
