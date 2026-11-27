@@ -13,7 +13,7 @@ export function Privacy() {
           <span className="absolute h-[70px] w-[70px] rounded-full border border-aurora-soft/80" />
           <ShieldCheck size={30} className="relative" />
         </div>
-        <p className="mt-8 max-w-[26rem] text-[clamp(1.35rem,3vw,1.75rem)] leading-snug font-semibold tracking-[-0.02em]">
+        <p className="mt-8 max-w-[26rem] text-[clamp(1.35rem,3vw,1.75rem)] leading-snug font-semibold tracking-[-0.012em]">
           Your calls aren’t recorded. Your memories stay on your device.
         </p>
         <a href={site.privacy} className="mt-5 text-[15px] text-ink-3 underline decoration-white/20 underline-offset-4 hover:text-ink">

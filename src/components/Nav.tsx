@@ -79,7 +79,7 @@ export function Nav({ faceId }: { faceId: string }) {
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.04 * i }}
-                className="border-b border-line py-5 text-[24px] font-semibold tracking-[-0.02em] text-ink"
+                className="border-b border-line py-5 text-[24px] font-semibold tracking-[-0.012em] text-ink"
               >
                 {l.label}
               </motion.a>

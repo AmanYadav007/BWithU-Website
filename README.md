@@ -34,6 +34,6 @@ npm run build && npx wrangler pages deploy dist --project-name bwithu-website
 
 ## Brand
 
-- Colors: Deep Space `#060816`, Aurora Purple `#A855F7`, Neon Cyan `#38BDF8`, Soft White `#F5F7FF` (tokens in `src/index.css`).
-- Type: Poppins (display), Inter (body).
-- Logo: the winking bear mark, `public/brand/mark.svg` (also `public/favicon.svg`); app icon `public/brand/icon.svg`.
+- Colors: Midnight `#080A12`, Slate `#171B2B`, Aurora `#9B4DFF`, Cyan `#38BDF8`, Porcelain `#F5F6FA` (tokens in `src/index.css`).
+- Type: Manrope (display and body), loaded from Google Fonts.
+- Logo: Brand 2.0 "The B" and lockups in `public/brand/` (masters: `design-system/logo/`), favicon set in `public/`.

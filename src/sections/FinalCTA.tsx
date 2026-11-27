@@ -18,7 +18,7 @@ export function FinalCTA({ faceId }: { faceId: string }) {
           <span aria-hidden className="absolute -right-1 bottom-0.5 h-4 w-4 rounded-full border-[3px] border-space bg-cyan" />
         </div>
 
-        <h2 className="mx-auto mt-10 text-[clamp(2.3rem,6.4vw,4.75rem)] leading-[1.02] font-semibold tracking-[-0.045em]">
+        <h2 className="mx-auto mt-10 text-[clamp(2.3rem,6.4vw,4.75rem)] leading-[1.02] font-semibold tracking-[-0.03em]">
           <BlurText text="Someone’s waiting to say hi." animateBy="words" delay={80} className="justify-center" />
         </h2>
         <a href={appLink({ face: face.id })} className="btn btn-primary mt-10 h-[60px] w-full max-w-[350px] px-9 text-[17px] font-semibold sm:w-auto">

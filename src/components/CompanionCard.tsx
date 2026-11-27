@@ -38,7 +38,7 @@ export function CompanionCard({ face, active, state, onTry, onEvent, overlay = f
   return (
     <div className={`flex w-full flex-col items-center ${overlay ? 'h-full' : ''}`}>
       <SpotlightCard
-        spotlightColor="rgb(168 85 247)"
+        spotlightColor="rgb(155 77 255)"
         intensity={0.22}
         className={`relative ${overlay ? 'h-full' : 'aspect-[3/4]'} w-full overflow-hidden !rounded-[32px] !p-0 transition-shadow duration-[600ms] sm:!rounded-[36px] ${
           running ? 'shadow-[0_0_0_2px_rgb(168_85_247/0.75),0_0_70px_-6px_rgb(168_85_247/0.6)]' : 'shadow-[0_0_0_1px_rgb(245_247_255/0.1),0_40px_100px_-30px_rgb(0_0_0/0.9)]'
@@ -89,7 +89,7 @@ export function CompanionCard({ face, active, state, onTry, onEvent, overlay = f
 
         {state === 'ended' && (
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 px-6 text-center">
-            <p className="text-[22px] font-semibold tracking-[-0.02em]">Stay on the line.</p>
+            <p className="text-[22px] font-semibold tracking-[-0.012em]">Stay on the line.</p>
             <a href={appLink({ face: face.id })} className="btn btn-primary h-14 px-9 text-[17px] font-semibold">
               Call now
             </a>

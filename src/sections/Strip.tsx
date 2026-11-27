@@ -18,7 +18,7 @@ export function Strip() {
             <Reveal as="li" key={title} delay={i * 0.08}>
               <SpotlightCard spotlightColor="rgb(56 189 248)" intensity={0.16} className="h-full !rounded-[24px] !p-6 text-left glass">
                 <Icon size={26} className="text-aurora-soft" />
-                <h3 className="mt-5 text-[20px] font-semibold tracking-[-0.02em]">{title}</h3>
+                <h3 className="mt-5 text-[20px] font-semibold tracking-[-0.012em]">{title}</h3>
                 <p className="mt-1.5 text-[15px] leading-snug text-ink-2">{body}</p>
               </SpotlightCard>
             </Reveal>

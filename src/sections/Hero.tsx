@@ -109,13 +109,13 @@ export function Hero({ onFace }: { onFace: (id: string) => void }) {
       {desktopMotion && (
         <Suspense fallback={null}>
           <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-[640px] [mask-image:linear-gradient(to_bottom,black,transparent)]">
-            <Aurora colorStops={['#7c3aed', '#38bdf8', '#a855f7']} amplitude={0.9} blend={0.6} speed={0.5} opacity={0.55} dpr={1} />
+            <Aurora colorStops={['#7c3aed', '#38bdf8', '#9b4dff']} amplitude={0.9} blend={0.6} speed={0.5} opacity={0.55} dpr={1} />
           </div>
         </Suspense>
       )}
 
       <div className="container-x relative flex flex-col items-center text-center">
-        <h1 className="text-[clamp(2.6rem,6.4vw,4.4rem)] leading-[1.02] font-semibold tracking-[-0.045em]">
+        <h1 className="text-[clamp(2.25rem,6.4vw,4.4rem)] leading-[1.02] font-semibold tracking-[-0.03em]">
           <BlurText text="Someone to talk to." trigger="load" animateBy="words" delay={90} className="justify-center" />
           <span className="text-gradient block">Face to face.</span>
           <span className="sr-only"> An AI companion you can video-call, in English, Hindi and Hinglish.</span>
@@ -136,8 +136,8 @@ export function Hero({ onFace }: { onFace: (id: string) => void }) {
                 wave={0.5}
                 fadeEdges={0.22}
                 shadow={0.4}
-                textColor="#f5f7ff"
-                font={'600 30px "DM Sans"'}
+                textColor="#f5f6fa"
+                font={'600 30px "Manrope"'}
                 showTitles={false}
                 scrollSpeed={2}
                 scrollEase={0.06}
